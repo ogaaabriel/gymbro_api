@@ -17,7 +17,7 @@ const generateRefreshToken = (user: User, jti: string) => {
 const generateTokens = (user: User, jti: string) => {
   const acessToken = generateAcessToken(user);
   const refreshToken = generateRefreshToken(user, jti);
-  return { acessToken, refreshToken };
+  return [acessToken, refreshToken];
 };
 
 export default {

@@ -16,10 +16,10 @@ POST http://localhost:8000/api/v1/auth/signup
 Content-Type: application/json
 
 {
-    "email":"user002@email.com",
+    "email":"user005@email.com",
     "password":"Gymbro123",
     "firstName":"User",
-    "lastName":"002"
+    "lastName":"005"
 }
 
 ###
@@ -28,7 +28,14 @@ POST http://localhost:8000/api/v1/auth/refresh_token
 Content-Type: application/json
 
 {
-    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImp0aSI6ImUwZTQzZDQxLWRmYTMtNDQwZS1iNGIwLThkNWI3OTMyMTViYSIsImlhdCI6MTY3ODkwOTgwOCwiZXhwIjoxNjc4OTM4NjA4fQ.64aDSiK4OP-_b9JSU2G6ZBGpNTrxb9njcCmGjnUFOW4"
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImp0aSI6ImJhY2JmNzFkLWRkYTAtNGRjNy1iMjk0LTViYzYzZGU1YzFlZSIsImlhdCI6MTY3ODkxNjk2NywiZXhwIjoxNjc4OTQ1NzY3fQ.stJ48w-bkCqwLZAy321_tdRHZ9o9QZN1yjO-PRwBK50"
 }
 
 ###
+
+POST http://localhost:8000/api/v1/auth/revoke_refresh_tokens
+Content-Type: application/json
+
+{
+    "userId":"1"
+}
