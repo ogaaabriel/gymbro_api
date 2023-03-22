@@ -3,13 +3,13 @@ import jwt from "jsonwebtoken";
 import { User } from "../types/user";
 
 const generateAcessToken = (user: User) => {
-  return jwt.sign({ userId: user.id }, "segredo123", {
-    expiresIn: "5m",
+  return jwt.sign({ userId: user.id }, process.env.SECRET_KEY!, {
+    expiresIn: "20m",
   });
 };
 
 const generateRefreshToken = (user: User, jti: string) => {
-  return jwt.sign({ userId: user.id, jti }, "segredo123", {
+  return jwt.sign({ userId: user.id, jti }, process.env.SECRET_KEY!, {
     expiresIn: "8h",
   });
 };

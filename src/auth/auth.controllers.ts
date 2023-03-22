@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import { StatusCodes } from "http-status-codes";
 import * as jwtLib from "jsonwebtoken";
 import { v4 } from "uuid";
@@ -19,7 +19,7 @@ import {
   findUserById,
 } from "../user/user.services";
 
-const login = async (req: Request, res: Response) => {
+const login = async (req: Request, res: Response, next: NextFunction) => {
   try {
     const credentials = UserLoginValidate.parse(req.body);
 
@@ -46,11 +46,11 @@ const login = async (req: Request, res: Response) => {
 
     return res.json({ acessToken, refreshToken });
   } catch (error) {
-    res.status(StatusCodes.BAD_REQUEST).json(error);
+    next(error);
   }
 };
 
-const signup = async (req: Request, res: Response) => {
+const signup = async (req: Request, res: Response, next: NextFunction) => {
   try {
     let newUser = UserSignupValidate.parse(req.body);
 
@@ -65,11 +65,15 @@ const signup = async (req: Request, res: Response) => {
     const { password, ...userWithoutPassword } = newUser;
     return res.json(userWithoutPassword);
   } catch (error) {
-    return res.status(StatusCodes.BAD_REQUEST).json(error);
+    next(error);
   }
 };
 
-const refreshToken = async (req: Request, res: Response) => {
+const refreshToken = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
@@ -78,7 +82,7 @@ const refreshToken = async (req: Request, res: Response) => {
         .json({ message: "Refresh token é necessário" });
     }
 
-    const payload: any = jwtLib.verify(refreshToken, "segredo123");
+    const payload: any = jwtLib.verify(refreshToken, process.env.SECRET_KEY!);
 
     const savedRefreshToken = await findRefreshTokenById(payload.jti || "");
     if (!savedRefreshToken || savedRefreshToken.revoked == true) {
@@ -109,17 +113,21 @@ const refreshToken = async (req: Request, res: Response) => {
 
     return res.json({ acessToken, newRefreshToken });
   } catch (error) {
-    return res.status(StatusCodes.BAD_REQUEST).json(error);
+    next(error);
   }
 };
 
-const revokeRefreshTokens = async (req: Request, res: Response) => {
+const revokeRefreshTokens = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   try {
     const { userId } = req.body;
     await revokeTokens(parseInt(userId));
     return res.json({ message: "Token revogados com sucesso" });
   } catch (error) {
-    return res.status(StatusCodes.BAD_REQUEST).json(error);
+    next(error);
   }
 };
 

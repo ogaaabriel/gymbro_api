@@ -1,7 +1,3 @@
-GET http://localhost:8000/api/v1/hello
-
-###
-
 POST http://localhost:8000/api/v1/auth/login
 Content-Type: application/json
 
@@ -28,7 +24,7 @@ POST http://localhost:8000/api/v1/auth/refresh_token
 Content-Type: application/json
 
 {
-    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImp0aSI6ImJhY2JmNzFkLWRkYTAtNGRjNy1iMjk0LTViYzYzZGU1YzFlZSIsImlhdCI6MTY3ODkxNjk2NywiZXhwIjoxNjc4OTQ1NzY3fQ.stJ48w-bkCqwLZAy321_tdRHZ9o9QZN1yjO-PRwBK50"
+    "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VySWQiOjEsImp0aSI6ImUxMjc2NzlkLTk5N2UtNGJjOS05NzJmLWIxZmM3YWIzMjliNyIsImlhdCI6MTY3OTQ4NzU4NiwiZXhwIjoxNjc5NTE2Mzg2fQ.EXwqm43VstwyO-i0h7bt8dINoQsJlqkVQj6DCQ8NJ6U"
 }
 
 ###
@@ -39,3 +35,5 @@ Content-Type: application/json
 {
     "userId":"1"
 }
+
+###

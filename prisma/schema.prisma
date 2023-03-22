@@ -8,18 +8,20 @@ datasource db {
 }
 
 model User {
-  id            Int            @id @default(autoincrement())
-  email         String         @unique
-  password      String
-  firstName     String
-  lastName      String
-  refreshTokens RefreshToken[]
+  id                 Int            @id @default(autoincrement())
+  email              String         @unique
+  password           String
+  firstName          String
+  lastName           String
+  profilePictureUrl  String?
+  profilePicturePath String?
+  refreshTokens      RefreshToken[]
 }
 
 model RefreshToken {
-  id          String   @id @unique @default(uuid())
+  id          String  @id @unique @default(uuid())
   hashedToken String
   userId      Int
-  User        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked     Boolean  @default(false)
+  User        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
+  revoked     Boolean @default(false)
 }

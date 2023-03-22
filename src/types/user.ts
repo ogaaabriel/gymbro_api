@@ -8,8 +8,13 @@ interface UserSignup extends UserLogin {
   lastName: string;
 }
 
-interface User extends UserSignup {
+interface User {
   id: number;
+  email: string;
+  firstName: string;
+  lastName: string;
+  profilePictureUrl: string | null;
+  profilePicturePath: string | null;
 }
 
 export { UserLogin, UserSignup, User };
