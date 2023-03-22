@@ -21,7 +21,9 @@ const updateProfilePicture = async (
   }
   try {
     if (req.user?.profilePicturePath) {
-      fs.unlinkSync(req.user.profilePicturePath);
+      try {
+        fs.unlinkSync(req.user.profilePicturePath);
+      } catch (error) {}
     }
 
     const urlPath = `${req.protocol}://${req.get("host")}/`;
@@ -33,7 +35,10 @@ const updateProfilePicture = async (
         profilePicturePath: filePath,
       },
     });
-    return res.json(user);
+    return res.json({
+      message: "Foto de perfil atualizado com sucesso",
+      profilePictureUrl: user.profilePictureUrl,
+    });
   } catch (error) {
     next(error);
   }
