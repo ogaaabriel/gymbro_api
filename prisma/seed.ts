@@ -3,16 +3,15 @@ import bcrypt from "bcrypt";
 import db from "../src/utils/db";
 
 const main = async () => {
-  const user = await db.user.create({
+  await db.user.create({
     data: {
-      email: "user001@email.com",
+      email: "admin001@example.com",
       password: await bcrypt.hash("Gymbro123", 10),
-      firstName: "User",
-      lastName: "001",
+      firstName: "Admin",
+      lastName: "00001",
+      isAdmin: true,
     },
   });
-
-  console.log(user);
 };
 
 main()

@@ -15,10 +15,7 @@ const port = process.env.PORT;
 app.use(express.json());
 app.use(cors());
 app.use(express.static("uploads"));
-
-app.get("/api/v1/hello", (req: Request, res: Response) =>
-  res.json({ message: "Hello, World!" })
-);
+app.use(express.static("public"));
 
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", isAuthenticated, userRouter);

@@ -6,7 +6,8 @@ CREATE TABLE "User" (
     "firstName" TEXT NOT NULL,
     "lastName" TEXT NOT NULL,
     "profilePictureUrl" TEXT,
-    "profilePicturePath" TEXT
+    "profilePicturePath" TEXT,
+    "isAdmin" BOOLEAN NOT NULL DEFAULT false
 );
 
 -- CreateTable

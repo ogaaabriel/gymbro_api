@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>GymBro API</title>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro&display=swap');
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+            font-family: 'Source Sans Pro', sans-serif;
+        }
+
+        main {
+            max-width: 1000px;
+            margin: 0 auto;
+        }
+    </style>
+</head>
+
+<body class="bg-light">
+    <main class="p-4 p-sm-5">
+        <h1 class="display-4 mb-5">GymBro API</h1>
+
+        <div class="mb-5">
+            <h2 class="mb-4">Authentication</h2>
+            <div class="bg-dark text-light p-5 rounded mb-3">
+                <h3>Login</h3>
+                <pre>
+                    POST https://gymbro-apy.onrender.com/api/v1/auth/login
+                    Content-Type: application/json
+
+                    {
+                        "email":"admin001@example.com",
+                        "password":"Gymbro123"
+                    }
+                </pre>
+            </div>
+            <div class="bg-dark text-light p-5 rounded mb-3">
+                <h3>Signup</h3>
+                <pre>
+                    POST https://gymbro-apy.onrender.com/api/v1/auth/signup
+                    Content-Type: application/json
+
+                    {
+                        "email":"user001@email.com",
+                        "password":"Gymbro123",
+                        "firstName":"User",
+                        "lastName":"001"
+                    }
+                </pre>
+            </div>
+            <div class="bg-dark text-light p-5 rounded mb-3">
+                <h3>Refresh Token</h3>
+                <pre>
+                    POST https://gymbro-apy.onrender.com/api/v1/auth/refresh_token
+                    Content-Type: application/json
+
+                    {
+                        "refreshToken":"eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+                        eyJ1c2VySWQiOjEsImp0aSI6ImUxMjc2NzlkLTk5N2UtNGJjOS05N
+                        zJmLWIxZmM3YWIzMjliNyIsImlhdCI6MTY3OTQ4NzU4NiwiZXhwIj
+                        oxNjc5NTE2Mzg2fQ.EXwqm43VstwyO-i0h7bt8dINoQsJlqkVQj6D
+                        CQ8NJ6U"
+                    }
+                </pre>
+            </div>
+            <div class="bg-dark text-light p-5 rounded mb-3">
+                <h3>Revoke Tokens</h3>
+                <pre>
+                    POST https://gymbro-apy.onrender.com/api/v1/auth/revoke_refresh_tokens
+                    Content-Type: application/json
+                    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+                    eyJ1c2VySWQiOjIsImlhdCI6MTY3OTY4MTA0MywiZXhwIjoxNjc5NjgxMz
+                    QzfQ.ViiZ5v8zC0_YqOQzJKgAlG6mgKYGmV8_CmdTtcA6BfI
+    
+                    {
+                        "userId":"1"
+                    }
+                </pre>
+            </div>
+        </div>
+
+        <div class="mb-5">
+            <h2 id="user" class="mb-4">User</h2>
+            <div class="bg-dark text-light p-5 rounded mb-3">
+                <h3>Me</h3>
+                <pre>
+                    GET https://gymbro-apy.onrender.com/api/v1/user/me
+                    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+                    eyJ1c2VySWQiOjEsImlhdCI6MTY3OTQ4NzYxNywiZXhwIjoxNjc5NDg4ODE
+                    3fQ.2BJLVbukZCxYtr8eE7YnfF8Yl039ufa1aE6q6IfWDaI
+                </pre>
+            </div>
+            <div class="bg-dark text-light p-5 rounded mb-3">
+                <h3>Update Profile Picture</h3>
+                <pre>
+                    POST https://gymbro-apy.onrender.com/api/v1/user/update_profile_picture
+                    Content-Type: multipart/form-data; boundary=----WebKitFormBoundary7MA4YWxkTrZu0gW
+                    Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.
+                    eyJ1c2VySWQiOjEsImlhdCI6MTY3OTQ4NzYxNywiZXhwIjoxNjc5NDg4ODE
+                    3fQ.2BJLVbukZCxYtr8eE7YnfF8Yl039ufa1aE6q6IfWDaI
+
+                    ------WebKitFormBoundary7MA4YWxkTrZu0gW
+                    Content-Disposition: form-data; name="image"; filename="placeholder.jpg"
+                    Content-Type: image/png
+
+                    < ./placeholder.jpg
+                    ------WebKitFormBoundary7MA4YWxkTrZu0gW--
+                </pre>
+            </div>
+        </div>
+    </main>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-qKXV1j0HvMUeCBQ+QVp7JcfGl760yU08IQ+GpUo5hlbpg51QRiuqHAJz8+BrxE/N"
+        crossorigin="anonymous"></script>
+</body>
+
+</html>

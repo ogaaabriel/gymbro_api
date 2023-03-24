@@ -36,4 +36,13 @@ const isAuthenticated = async (
   }
 };
 
-export { isAuthenticated };
+const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+  if (!req.user?.isAdmin) {
+    return res
+      .status(StatusCodes.FORBIDDEN)
+      .json({ message: "Sem permissão para acessar essa rota" });
+  }
+  next();
+};
+
+export { isAuthenticated, isAdmin };

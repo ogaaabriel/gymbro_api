@@ -15,6 +15,7 @@ interface User {
   lastName: string;
   profilePictureUrl: string | null;
   profilePicturePath: string | null;
+  isAdmin: boolean;
 }
 
 export { UserLogin, UserSignup, User };

@@ -23,4 +23,4 @@ npx prisma migrate dev
 npm run dev
 ```
 
-You can use the `requests.http` file to test the api endpoints. To do it you must install the vscode extension `REST Client Api`.
+You can use the `.http` files in requests folder to test the api endpoints. To do it you must install the vscode extension `REST Client Api`.

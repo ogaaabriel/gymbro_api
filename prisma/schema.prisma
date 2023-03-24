@@ -16,6 +16,7 @@ model User {
   profilePictureUrl  String?
   profilePicturePath String?
   refreshTokens      RefreshToken[]
+  isAdmin            Boolean        @default(false)
 }
 
 model RefreshToken {
