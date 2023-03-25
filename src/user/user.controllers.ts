@@ -6,6 +6,11 @@ import fs from "fs";
 import db from "../utils/db";
 
 const me = async (req: Request, res: Response) => {
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
   return res.json(req.user);
 };
 
@@ -14,6 +19,19 @@ const updateProfilePicture = async (
   res: Response,
   next: NextFunction
 ) => {
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
+  /*
+    #swagger.consumes = ['multipart/form-data']  
+    #swagger.parameters['profile_picture'] = {
+      in: 'formData',
+      type: 'file',
+      required: 'true',
+    } 
+  */
   if (!req.file) {
     return res
       .status(StatusCodes.BAD_REQUEST)

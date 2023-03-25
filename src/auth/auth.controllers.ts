@@ -20,6 +20,13 @@ import {
 } from "../user/user.services";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
+  /*  
+    #swagger.parameters['userCredentials'] = {
+      in: 'body',
+      description: 'login',
+      schema: { $ref: '#/definitions/userCredentials' }
+    } 
+  */
   try {
     const credentials = UserLoginValidate.parse(req.body);
 
@@ -51,6 +58,13 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 };
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
+  /*  
+    #swagger.parameters['userCredentials'] = {
+      in: 'body',
+      description: 'login',
+      schema: { $ref: '#/definitions/userData' }
+    } 
+  */
   try {
     let newUser = UserSignupValidate.parse(req.body);
 
@@ -74,6 +88,13 @@ const refreshToken = async (
   res: Response,
   next: NextFunction
 ) => {
+  /*  
+    #swagger.parameters['userCredentials'] = {
+      in: 'body',
+      description: 'login',
+      schema: { $ref: '#/definitions/refreshToken' }
+    } 
+  */
   try {
     const { refreshToken } = req.body;
     if (!refreshToken) {
@@ -122,6 +143,18 @@ const revokeRefreshTokens = async (
   res: Response,
   next: NextFunction
 ) => {
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
+  /*  
+    #swagger.parameters['userCredentials'] = {
+      in: 'body',
+      description: 'login',
+      schema: { $ref: '#/definitions/revokeTokens' }
+    } 
+  */
   try {
     const { userId } = req.body;
     await revokeTokens(parseInt(userId));

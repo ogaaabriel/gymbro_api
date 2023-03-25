@@ -1,0 +1,211 @@
+{
+  "swagger": "2.0",
+  "info": {
+    "version": "1.0",
+    "title": "GymBro API",
+    "description": "Sports social network API built with express and prisma"
+  },
+  "basePath": "",
+  "tags": [
+    {
+      "name": "",
+      "description": ""
+    }
+  ],
+  "schemes": [],
+  "securityDefinitions": {
+    "apiKeyAuth": {
+      "type": "apiKey",
+      "in": "header",
+      "name": "Authorization"
+    }
+  },
+  "paths": {
+    "/api/v1/auth/login": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "userCredentials",
+            "in": "body",
+            "description": "login",
+            "schema": {
+              "$ref": "#/definitions/userCredentials"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/signup": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "userCredentials",
+            "in": "body",
+            "description": "login",
+            "schema": {
+              "$ref": "#/definitions/userData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/refresh_token": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "userCredentials",
+            "in": "body",
+            "description": "login",
+            "schema": {
+              "$ref": "#/definitions/refreshToken"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/revoke_refresh_tokens": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "userCredentials",
+            "in": "body",
+            "description": "login",
+            "schema": {
+              "$ref": "#/definitions/revokeTokens"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/user/me": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/user/update_profile_picture": {
+      "post": {
+        "description": "",
+        "consumes": [
+          "multipart/form-data"
+        ],
+        "parameters": [
+          {
+            "name": "profile_picture",
+            "in": "formData",
+            "type": "file",
+            "required": true
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    }
+  },
+  "definitions": {
+    "userCredentials": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Pass1234"
+        }
+      }
+    },
+    "userData": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@example.com"
+        },
+        "password": {
+          "type": "string",
+          "example": "Pass1234"
+        },
+        "firstName": {
+          "type": "string",
+          "example": "First name"
+        },
+        "lastName": {
+          "type": "string",
+          "example": "Last name"
+        }
+      }
+    },
+    "refreshToken": {
+      "type": "object",
+      "properties": {
+        "refreshToken": {
+          "type": "string",
+          "example": "token..."
+        }
+      }
+    },
+    "revokeTokens": {
+      "type": "object",
+      "properties": {
+        "userId": {
+          "type": "number",
+          "example": 1
+        }
+      }
+    }
+  }
+}
