@@ -14,6 +14,12 @@ const generateRefreshToken = (user: User, jti: string) => {
   });
 };
 
+const generateResetPasswordToken = (user: User, jti: string) => {
+  return jwt.sign({ userId: user.id, jti }, process.env.SECRET_KEY!, {
+    expiresIn: process.env.RESETPASSWORD_TOKEN_TIME,
+  });
+};
+
 const generateTokens = (user: User, jti: string) => {
   const acessToken = generateAccessToken(user);
   const refreshToken = generateRefreshToken(user, jti);
@@ -23,5 +29,6 @@ const generateTokens = (user: User, jti: string) => {
 export default {
   generateAccessToken,
   generateRefreshToken,
+  generateResetPasswordToken,
   generateTokens,
 };

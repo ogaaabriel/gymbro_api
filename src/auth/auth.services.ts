@@ -1,8 +1,8 @@
 import db from "../utils/db";
-import hashToken from "../utils/hashToken";
+import { hashToken } from "../utils/hash";
 
 const addRefreshTokenToWhiteList = (
-  jti: any,
+  jti: string,
   refreshToken: string,
   userId: number
 ) => {
@@ -15,12 +15,39 @@ const addRefreshTokenToWhiteList = (
   });
 };
 
+const addResetpasswordTokenToWhiteList = (
+  jti: string,
+  resetpasswordToken: string,
+  userId: number
+) => {
+  return db.resetPasswordToken.create({
+    data: {
+      id: jti,
+      hashedToken: hashToken(resetpasswordToken),
+      userId,
+    },
+  });
+};
+
 const findRefreshTokenById = (id: string) => {
   return db.refreshToken.findUnique({ where: { id } });
 };
 
+const findResetPasswordTokenById = (id: string) => {
+  return db.resetPasswordToken.findUnique({ where: { id } });
+};
+
 const deleteRefreshToken = (id: string) => {
   return db.refreshToken.update({
+    where: { id },
+    data: {
+      revoked: true,
+    },
+  });
+};
+
+const deleteResetPasswordToken = (id: string) => {
+  return db.resetPasswordToken.update({
     where: { id },
     data: {
       revoked: true,
@@ -37,7 +64,10 @@ const revokeTokens = (userId: number) => {
 
 export {
   addRefreshTokenToWhiteList,
+  addResetpasswordTokenToWhiteList,
   findRefreshTokenById,
+  findResetPasswordTokenById,
   deleteRefreshToken,
+  deleteResetPasswordToken,
   revokeTokens,
 };

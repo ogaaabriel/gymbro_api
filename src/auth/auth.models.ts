@@ -16,4 +16,23 @@ const UserSignupValidate = UserLoginValidate.extend({
     .min(3, { message: "Sobrenome deve ter ao menos 3 caracteres" }),
 });
 
-export { UserLoginValidate, UserSignupValidate };
+const emailValidate = (email: string) => {
+  const schema = z
+    .string({ required_error: "Email não pode ser nulo" })
+    .email({ message: "Email inválido" });
+  schema.parse(email);
+};
+
+const passwordValidate = (password: string) => {
+  const schema = z
+    .string()
+    .min(8, { message: "Senha deve conter ao menos 8 caracteres" });
+  schema.parse(password);
+};
+
+export {
+  UserLoginValidate,
+  UserSignupValidate,
+  emailValidate,
+  passwordValidate,
+};

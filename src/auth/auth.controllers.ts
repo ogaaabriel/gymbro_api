@@ -3,27 +3,36 @@ import { StatusCodes } from "http-status-codes";
 import * as jwtLib from "jsonwebtoken";
 import { v4 } from "uuid";
 
-import { UserLoginValidate, UserSignupValidate } from "./auth.models";
+import {
+  UserLoginValidate,
+  UserSignupValidate,
+  emailValidate,
+  passwordValidate,
+} from "./auth.models";
 import jwt from "../utils/jwt";
-import hashToken from "../utils/hashToken";
 import {
   addRefreshTokenToWhiteList,
+  addResetpasswordTokenToWhiteList,
   deleteRefreshToken,
+  deleteResetPasswordToken,
   findRefreshTokenById,
+  findResetPasswordTokenById,
   revokeTokens,
 } from "./auth.services";
 import {
+  changePassword,
   checkUserPassword,
   createUser,
   findUserByEmail,
   findUserById,
 } from "../user/user.services";
+import { hashToken } from "../utils/hash";
+import sendEmail from "../utils/email";
 
 const login = async (req: Request, res: Response, next: NextFunction) => {
   /*  
-    #swagger.parameters['userCredentials'] = {
+    #swagger.parameters['login'] = {
       in: 'body',
-      description: 'login',
       schema: { $ref: '#/definitions/userCredentials' }
     } 
   */
@@ -51,7 +60,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     const [acessToken, refreshToken] = jwt.generateTokens(user, jti);
     await addRefreshTokenToWhiteList(jti, refreshToken, user.id);
 
-    return res.json({ acessToken, refreshToken });
+    const { password, ...userWithoutPassword } = user;
+    return res.json({ acessToken, refreshToken, user: userWithoutPassword });
   } catch (error) {
     next(error);
   }
@@ -59,9 +69,8 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
 
 const signup = async (req: Request, res: Response, next: NextFunction) => {
   /*  
-    #swagger.parameters['userCredentials'] = {
+    #swagger.parameters['signup'] = {
       in: 'body',
-      description: 'login',
       schema: { $ref: '#/definitions/userData' }
     } 
   */
@@ -83,15 +92,119 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
+const forgotPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  /*  
+    #swagger.parameters['forgotPassword'] = {
+      in: 'body',
+      schema: { $ref: '#/definitions/forgotPassword' }
+    } 
+  */
+  try {
+    const { email } = req.body;
+    emailValidate(email);
+
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Esse email não corresponde a nenhuma conta" });
+    }
+
+    const jti = v4();
+    const token = jwt.generateResetPasswordToken(user, jti);
+    await addResetpasswordTokenToWhiteList(jti, token, user.id);
+
+    sendEmail(
+      email,
+      "Recuperação de senha",
+      process.env.CLIENT_URL + "/reset_password?token=" + token,
+      (error, info) => {
+        if (error) {
+          throw error;
+        }
+      }
+    );
+
+    return res.json({
+      message: "Email para recuperação de senha enviado para " + email,
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+const resetPassword = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  /*  
+    #swagger.parameters['resetPassword'] = {
+      in: 'body',
+      schema: { $ref: '#/definitions/resetPassword' }
+    } 
+  */
+  try {
+    const { resetPasswordToken } = req.params;
+
+    if (!resetPasswordToken) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Token é necessário" });
+    }
+
+    const payload: any = jwtLib.verify(
+      resetPasswordToken,
+      process.env.SECRET_KEY!
+    );
+
+    const savedResetPasswordToken = await findResetPasswordTokenById(
+      payload.jti || ""
+    );
+    if (!savedResetPasswordToken || savedResetPasswordToken.revoked == true) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Token inválido" });
+    }
+
+    const hashedToken = hashToken(resetPasswordToken);
+    if (hashedToken !== savedResetPasswordToken.hashedToken) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Token inválido" });
+    }
+
+    const user = await findUserById(payload.userId);
+    if (!user) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Autorização inválida" });
+    }
+
+    const { newPassword } = req.body;
+    passwordValidate(newPassword);
+
+    await deleteResetPasswordToken(payload.jti);
+    await changePassword(newPassword, user.id);
+
+    return res.json({ message: "Senha atualizada com sucesso" });
+  } catch (error) {
+    next(error);
+  }
+};
+
 const refreshToken = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
   /*  
-    #swagger.parameters['userCredentials'] = {
+    #swagger.parameters['refreshToken'] = {
       in: 'body',
-      description: 'login',
       schema: { $ref: '#/definitions/refreshToken' }
     } 
   */
@@ -149,9 +262,8 @@ const revokeRefreshTokens = async (
     ] 
   */
   /*  
-    #swagger.parameters['userCredentials'] = {
+    #swagger.parameters['revokeRefreshTokens'] = {
       in: 'body',
-      description: 'login',
       schema: { $ref: '#/definitions/revokeTokens' }
     } 
   */
@@ -164,4 +276,11 @@ const revokeRefreshTokens = async (
   }
 };
 
-export { login, signup, refreshToken, revokeRefreshTokens };
+export {
+  login,
+  signup,
+  refreshToken,
+  revokeRefreshTokens,
+  forgotPassword,
+  resetPassword,
+};

@@ -22,7 +22,7 @@ const isAuthenticated = async (
     const payload: any = jwtLib.verify(token, process.env.SECRET_KEY!);
 
     const user = await findUserById(payload.userId);
-    if (!user) {
+    if (!user || !user.isActive) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Autorização inválida" });

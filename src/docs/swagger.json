@@ -26,9 +26,8 @@
         "description": "",
         "parameters": [
           {
-            "name": "userCredentials",
+            "name": "login",
             "in": "body",
-            "description": "login",
             "schema": {
               "$ref": "#/definitions/userCredentials"
             }
@@ -46,11 +45,54 @@
         "description": "",
         "parameters": [
           {
-            "name": "userCredentials",
+            "name": "signup",
             "in": "body",
-            "description": "login",
             "schema": {
               "$ref": "#/definitions/userData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/forgot_password": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "forgotPassword",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/forgotPassword"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        }
+      }
+    },
+    "/api/v1/auth/reset_password/{resetPasswordToken}": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "resetPasswordToken",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "resetPassword",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/resetPassword"
             }
           }
         ],
@@ -66,9 +108,8 @@
         "description": "",
         "parameters": [
           {
-            "name": "userCredentials",
+            "name": "refreshToken",
             "in": "body",
-            "description": "login",
             "schema": {
               "$ref": "#/definitions/refreshToken"
             }
@@ -91,9 +132,8 @@
             "type": "string"
           },
           {
-            "name": "userCredentials",
+            "name": "revokeRefreshTokens",
             "in": "body",
-            "description": "login",
             "schema": {
               "$ref": "#/definitions/revokeTokens"
             }
@@ -186,6 +226,24 @@
         "lastName": {
           "type": "string",
           "example": "Last name"
+        }
+      }
+    },
+    "forgotPassword": {
+      "type": "object",
+      "properties": {
+        "email": {
+          "type": "string",
+          "example": "user@example.com"
+        }
+      }
+    },
+    "resetPassword": {
+      "type": "object",
+      "properties": {
+        "newPassword": {
+          "type": "string",
+          "example": "pass1234"
         }
       }
     },

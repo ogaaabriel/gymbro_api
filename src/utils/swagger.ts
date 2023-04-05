@@ -35,6 +35,12 @@ const doc = {
       firstName: "First name",
       lastName: "Last name",
     },
+    forgotPassword: {
+      email: "user@example.com",
+    },
+    resetPassword: {
+      newPassword: "pass1234",
+    },
     refreshToken: {
       refreshToken: "token...",
     },
