@@ -1,14 +1,14 @@
-interface UserLogin {
+export interface UserLogin {
   email: string;
   password: string;
 }
 
-interface UserSignup extends UserLogin {
+export interface UserSignup extends UserLogin {
   firstName: string;
   lastName: string;
 }
 
-interface User {
+export interface User {
   id: number;
   email: string;
   firstName: string;
@@ -17,5 +17,3 @@ interface User {
   profilePicturePath: string | null;
   isAdmin: boolean;
 }
-
-export { UserLogin, UserSignup, User };

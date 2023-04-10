@@ -17,8 +17,10 @@ model User {
   profilePicturePath  String?
   refreshTokens       RefreshToken[]
   resetpasswordTokens ResetPasswordToken[]
+  events              Event[]
   isAdmin             Boolean              @default(false)
   isActive            Boolean              @default(true)
+  UsersOnEvents       UsersOnEvents[]
 }
 
 model RefreshToken {
@@ -35,4 +37,26 @@ model ResetPasswordToken {
   userId      Int
   User        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
   revoked     Boolean @default(false)
+}
+
+model Event {
+  id            Int             @id @default(autoincrement())
+  title         String
+  description   String
+  eventDate     DateTime
+  public        Boolean         @default(true)
+  hasLimit      Boolean         @default(false)
+  limitCount    Int?
+  adminId       Int
+  Admin         User            @relation(fields: [adminId], references: [id], onDelete: Cascade)
+  UsersOnEvents UsersOnEvents[]
+}
+
+model UsersOnEvents {
+  eventId Int
+  Event   Event @relation(fields: [eventId], references: [id], onDelete: Cascade)
+  userId  Int
+  User    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@id([eventId, userId])
 }

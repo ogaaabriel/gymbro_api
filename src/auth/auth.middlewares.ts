@@ -4,7 +4,7 @@ import * as jwtLib from "jsonwebtoken";
 
 import { findUserById } from "../user/user.services";
 
-const isAuthenticated = async (
+export const isAuthenticated = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -36,7 +36,7 @@ const isAuthenticated = async (
   }
 };
 
-const isAdmin = (req: Request, res: Response, next: NextFunction) => {
+export const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   if (!req.user?.isAdmin) {
     return res
       .status(StatusCodes.FORBIDDEN)
@@ -44,5 +44,3 @@ const isAdmin = (req: Request, res: Response, next: NextFunction) => {
   }
   next();
 };
-
-export { isAuthenticated, isAdmin };

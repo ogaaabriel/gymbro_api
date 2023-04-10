@@ -12,7 +12,7 @@ const profilePictureStorage = multer.diskStorage({
   },
 });
 
-const profilePictureUpload = multer({
+export const profilePictureUpload = multer({
   storage: profilePictureStorage,
   limits: { fileSize: 8 * 1024 * 1024 },
   fileFilter: (req, file, cb) => {
@@ -30,5 +30,3 @@ const profilePictureUpload = multer({
     }
   },
 });
-
-export { profilePictureUpload };

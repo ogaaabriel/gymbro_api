@@ -1,7 +1,7 @@
 import db from "../utils/db";
 import { hashToken } from "../utils/hash";
 
-const addRefreshTokenToWhiteList = (
+export const addRefreshTokenToWhiteList = (
   jti: string,
   refreshToken: string,
   userId: number
@@ -15,7 +15,7 @@ const addRefreshTokenToWhiteList = (
   });
 };
 
-const addResetpasswordTokenToWhiteList = (
+export const addResetpasswordTokenToWhiteList = (
   jti: string,
   resetpasswordToken: string,
   userId: number
@@ -29,15 +29,15 @@ const addResetpasswordTokenToWhiteList = (
   });
 };
 
-const findRefreshTokenById = (id: string) => {
+export const findRefreshTokenById = (id: string) => {
   return db.refreshToken.findUnique({ where: { id } });
 };
 
-const findResetPasswordTokenById = (id: string) => {
+export const findResetPasswordTokenById = (id: string) => {
   return db.resetPasswordToken.findUnique({ where: { id } });
 };
 
-const deleteRefreshToken = (id: string) => {
+export const deleteRefreshToken = (id: string) => {
   return db.refreshToken.update({
     where: { id },
     data: {
@@ -46,7 +46,7 @@ const deleteRefreshToken = (id: string) => {
   });
 };
 
-const deleteResetPasswordToken = (id: string) => {
+export const deleteResetPasswordToken = (id: string) => {
   return db.resetPasswordToken.update({
     where: { id },
     data: {
@@ -55,19 +55,9 @@ const deleteResetPasswordToken = (id: string) => {
   });
 };
 
-const revokeTokens = (userId: number) => {
+export const revokeTokens = (userId: number) => {
   return db.refreshToken.updateMany({
     where: { userId },
     data: { revoked: true },
   });
-};
-
-export {
-  addRefreshTokenToWhiteList,
-  addResetpasswordTokenToWhiteList,
-  findRefreshTokenById,
-  findResetPasswordTokenById,
-  deleteRefreshToken,
-  deleteResetPasswordToken,
-  revokeTokens,
 };

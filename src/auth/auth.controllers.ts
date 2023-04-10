@@ -4,12 +4,11 @@ import * as jwtLib from "jsonwebtoken";
 import { v4 } from "uuid";
 
 import {
-  UserLoginValidate,
-  UserSignupValidate,
+  LoginValidate,
+  SignupValidate,
   emailValidate,
   passwordValidate,
 } from "./auth.models";
-import jwt from "../utils/jwt";
 import {
   addRefreshTokenToWhiteList,
   addResetpasswordTokenToWhiteList,
@@ -28,8 +27,13 @@ import {
 } from "../user/user.services";
 import { hashToken } from "../utils/hash";
 import sendEmail from "../utils/email";
+import { generateResetPasswordToken, generateTokens } from "../utils/jwt";
 
-const login = async (req: Request, res: Response, next: NextFunction) => {
+export const login = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*  
     #swagger.parameters['login'] = {
       in: 'body',
@@ -37,7 +41,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     } 
   */
   try {
-    const credentials = UserLoginValidate.parse(req.body);
+    const credentials = LoginValidate.parse(req.body);
 
     const user = await findUserByEmail(credentials.email);
     if (!user) {
@@ -57,7 +61,7 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
     }
 
     const jti = v4();
-    const [acessToken, refreshToken] = jwt.generateTokens(user, jti);
+    const [acessToken, refreshToken] = generateTokens(user, jti);
     await addRefreshTokenToWhiteList(jti, refreshToken, user.id);
 
     const { password, ...userWithoutPassword } = user;
@@ -67,7 +71,11 @@ const login = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const signup = async (req: Request, res: Response, next: NextFunction) => {
+export const signup = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
   /*  
     #swagger.parameters['signup'] = {
       in: 'body',
@@ -75,7 +83,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
     } 
   */
   try {
-    let newUser = UserSignupValidate.parse(req.body);
+    let newUser = SignupValidate.parse(req.body);
 
     const user = await findUserByEmail(newUser.email);
     if (user) {
@@ -92,7 +100,7 @@ const signup = async (req: Request, res: Response, next: NextFunction) => {
   }
 };
 
-const forgotPassword = async (
+export const forgotPassword = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -115,7 +123,7 @@ const forgotPassword = async (
     }
 
     const jti = v4();
-    const token = jwt.generateResetPasswordToken(user, jti);
+    const token = generateResetPasswordToken(user, jti);
     await addResetpasswordTokenToWhiteList(jti, token, user.id);
 
     sendEmail(
@@ -137,7 +145,7 @@ const forgotPassword = async (
   }
 };
 
-const resetPassword = async (
+export const resetPassword = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -197,7 +205,7 @@ const resetPassword = async (
   }
 };
 
-const refreshToken = async (
+export const refreshToken = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -242,7 +250,7 @@ const refreshToken = async (
     await deleteRefreshToken(payload.jti);
 
     const jti = v4();
-    const [acessToken, newRefreshToken] = jwt.generateTokens(user, jti);
+    const [acessToken, newRefreshToken] = generateTokens(user, jti);
     await addRefreshTokenToWhiteList(jti, newRefreshToken, user.id);
 
     return res.json({ acessToken, newRefreshToken });
@@ -251,7 +259,7 @@ const refreshToken = async (
   }
 };
 
-const revokeRefreshTokens = async (
+export const revokeRefreshTokens = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -274,13 +282,4 @@ const revokeRefreshTokens = async (
   } catch (error) {
     next(error);
   }
-};
-
-export {
-  login,
-  signup,
-  refreshToken,
-  revokeRefreshTokens,
-  forgotPassword,
-  resetPassword,
 };

@@ -192,6 +192,152 @@
           }
         ]
       }
+    },
+    "/api/v1/events/public_events": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/private_events": {
+      "get": {
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/": {
+      "post": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "createEvent",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/eventData"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "description": "",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "description": "",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/{eventId}": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/{eventId}/users": {
+      "get": {
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/join_event": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/leave_event": {
+      "post": {
+        "description": "",
+        "parameters": [],
+        "responses": {},
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
     }
   },
   "definitions": {
@@ -262,6 +408,35 @@
         "userId": {
           "type": "number",
           "example": 1
+        }
+      }
+    },
+    "eventData": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Some title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Some description"
+        },
+        "eventDate": {
+          "type": "string",
+          "example": "2023-04-10T15:43:40.783Z"
+        },
+        "public": {
+          "type": "boolean",
+          "example": true
+        },
+        "hasLimit": {
+          "type": "boolean",
+          "example": true
+        },
+        "limitCount": {
+          "type": "number",
+          "example": 10
         }
       }
     }

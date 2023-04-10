@@ -5,7 +5,7 @@ import fs from "fs";
 
 import db from "../utils/db";
 
-const me = async (req: Request, res: Response) => {
+export const me = async (req: Request, res: Response) => {
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -14,7 +14,7 @@ const me = async (req: Request, res: Response) => {
   return res.json(req.user);
 };
 
-const updateProfilePicture = async (
+export const updateProfilePicture = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -61,5 +61,3 @@ const updateProfilePicture = async (
     next(error);
   }
 };
-
-export { me, updateProfilePicture };

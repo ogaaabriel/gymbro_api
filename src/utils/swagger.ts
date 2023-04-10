@@ -47,6 +47,14 @@ const doc = {
     revokeTokens: {
       userId: 1,
     },
+    eventData: {
+      title: "Some title",
+      description: "Some description",
+      eventDate: "2023-04-10T15:43:40.783Z",
+      public: true,
+      hasLimit: true,
+      limitCount: 10,
+    },
   },
   components: {},
 };

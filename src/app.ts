@@ -8,6 +8,7 @@ import authRouter from "./auth/auth.routes";
 import userRouter from "./user/user.routes";
 import { StatusCodes } from "http-status-codes";
 import { isAuthenticated } from "./auth/auth.middlewares";
+import eventsRouter from "./event/event.routes";
 
 dotenv.config();
 
@@ -21,6 +22,7 @@ app.use(express.static("uploads"));
 app.use("/api/v1/docs", swaggerUi.serve, swaggerUi.setup(swaggerDocument));
 app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", isAuthenticated, userRouter);
+app.use("/api/v1/events", isAuthenticated, eventsRouter);
 
 app.use((error: any, req: Request, res: Response, next: NextFunction) =>
   res.status(StatusCodes.BAD_REQUEST).json(error)
