@@ -8,35 +8,32 @@ datasource db {
 }
 
 model User {
-  id                  Int                  @id @default(autoincrement())
-  email               String               @unique
-  password            String
-  firstName           String
-  lastName            String
-  profilePictureUrl   String?
-  profilePicturePath  String?
-  refreshTokens       RefreshToken[]
-  resetpasswordTokens ResetPasswordToken[]
-  events              Event[]
-  isAdmin             Boolean              @default(false)
-  isActive            Boolean              @default(true)
-  UsersOnEvents       UsersOnEvents[]
+  id                 Int             @id @default(autoincrement())
+  email              String          @unique
+  password           String
+  firstName          String
+  lastName           String
+  profilePictureUrl  String?
+  profilePicturePath String?
+  tokens             Token[]
+  events             Event[]
+  isAdmin            Boolean         @default(false)
+  isActive           Boolean         @default(true)
+  UsersOnEvents      UsersOnEvents[]
 }
 
-model RefreshToken {
-  id          String  @id @unique @default(uuid())
+model Token {
+  id          String    @id @unique @default(uuid())
   hashedToken String
+  revoked     Boolean   @default(false)
+  tokenType   TokenType
   userId      Int
-  User        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked     Boolean @default(false)
+  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
-model ResetPasswordToken {
-  id          String  @id @unique @default(uuid())
-  hashedToken String
-  userId      Int
-  User        User    @relation(fields: [userId], references: [id], onDelete: Cascade)
-  revoked     Boolean @default(false)
+enum TokenType {
+  REFRESH
+  RESET_PASSWORD
 }
 
 model Event {

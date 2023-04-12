@@ -10,12 +10,9 @@ import {
   passwordValidate,
 } from "./auth.models";
 import {
-  addRefreshTokenToWhiteList,
-  addResetpasswordTokenToWhiteList,
-  deleteRefreshToken,
-  deleteResetPasswordToken,
-  findRefreshTokenById,
-  findResetPasswordTokenById,
+  addTokenToWhiteList,
+  deleteToken,
+  findTokenById,
   revokeTokens,
 } from "./auth.services";
 import {
@@ -28,6 +25,7 @@ import {
 import { hashToken } from "../utils/hash";
 import sendEmail from "../utils/email";
 import { generateResetPasswordToken, generateTokens } from "../utils/jwt";
+import { TokenType } from "@prisma/client";
 
 export const login = async (
   req: Request,
@@ -62,7 +60,7 @@ export const login = async (
 
     const jti = v4();
     const [acessToken, refreshToken] = generateTokens(user, jti);
-    await addRefreshTokenToWhiteList(jti, refreshToken, user.id);
+    await addTokenToWhiteList(jti, refreshToken, TokenType.REFRESH, user.id);
 
     const { password, ...userWithoutPassword } = user;
     return res.json({ acessToken, refreshToken, user: userWithoutPassword });
@@ -124,7 +122,7 @@ export const forgotPassword = async (
 
     const jti = v4();
     const token = generateResetPasswordToken(user, jti);
-    await addResetpasswordTokenToWhiteList(jti, token, user.id);
+    await addTokenToWhiteList(jti, token, TokenType.RESET_PASSWORD, user.id);
 
     sendEmail(
       email,
@@ -170,8 +168,9 @@ export const resetPassword = async (
       process.env.SECRET_KEY!
     );
 
-    const savedResetPasswordToken = await findResetPasswordTokenById(
-      payload.jti || ""
+    const savedResetPasswordToken = await findTokenById(
+      payload.jti || "",
+      TokenType.RESET_PASSWORD
     );
     if (!savedResetPasswordToken || savedResetPasswordToken.revoked == true) {
       return res
@@ -196,7 +195,7 @@ export const resetPassword = async (
     const { newPassword } = req.body;
     passwordValidate(newPassword);
 
-    await deleteResetPasswordToken(payload.jti);
+    await deleteToken(payload.jti);
     await changePassword(newPassword, user.id);
 
     return res.json({ message: "Senha atualizada com sucesso" });
@@ -226,7 +225,10 @@ export const refreshToken = async (
 
     const payload: any = jwtLib.verify(refreshToken, process.env.SECRET_KEY!);
 
-    const savedRefreshToken = await findRefreshTokenById(payload.jti || "");
+    const savedRefreshToken = await findTokenById(
+      payload.jti || "",
+      TokenType.REFRESH
+    );
     if (!savedRefreshToken || savedRefreshToken.revoked == true) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -247,11 +249,11 @@ export const refreshToken = async (
         .json({ message: "Autorização inválida" });
     }
 
-    await deleteRefreshToken(payload.jti);
+    await deleteToken(payload.jti);
 
     const jti = v4();
     const [acessToken, newRefreshToken] = generateTokens(user, jti);
-    await addRefreshTokenToWhiteList(jti, newRefreshToken, user.id);
+    await addTokenToWhiteList(jti, newRefreshToken, TokenType.REFRESH, user.id);
 
     return res.json({ acessToken, newRefreshToken });
   } catch (error) {

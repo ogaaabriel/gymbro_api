@@ -1,53 +1,29 @@
+import { TokenType } from "@prisma/client";
 import db from "../utils/db";
 import { hashToken } from "../utils/hash";
 
-export const addRefreshTokenToWhiteList = (
+export const addTokenToWhiteList = (
   jti: string,
-  refreshToken: string,
+  token: string,
+  tokenType: TokenType,
   userId: number
 ) => {
-  return db.refreshToken.create({
+  return db.token.create({
     data: {
       id: jti,
-      hashedToken: hashToken(refreshToken),
+      hashedToken: hashToken(token),
+      tokenType,
       userId,
     },
   });
 };
 
-export const addResetpasswordTokenToWhiteList = (
-  jti: string,
-  resetpasswordToken: string,
-  userId: number
-) => {
-  return db.resetPasswordToken.create({
-    data: {
-      id: jti,
-      hashedToken: hashToken(resetpasswordToken),
-      userId,
-    },
-  });
+export const findTokenById = (id: string, tokenType: TokenType) => {
+  return db.token.findFirst({ where: { id, tokenType } });
 };
 
-export const findRefreshTokenById = (id: string) => {
-  return db.refreshToken.findUnique({ where: { id } });
-};
-
-export const findResetPasswordTokenById = (id: string) => {
-  return db.resetPasswordToken.findUnique({ where: { id } });
-};
-
-export const deleteRefreshToken = (id: string) => {
-  return db.refreshToken.update({
-    where: { id },
-    data: {
-      revoked: true,
-    },
-  });
-};
-
-export const deleteResetPasswordToken = (id: string) => {
-  return db.resetPasswordToken.update({
+export const deleteToken = (id: string) => {
+  return db.token.update({
     where: { id },
     data: {
       revoked: true,
@@ -56,7 +32,7 @@ export const deleteResetPasswordToken = (id: string) => {
 };
 
 export const revokeTokens = (userId: number) => {
-  return db.refreshToken.updateMany({
+  return db.token.updateMany({
     where: { userId },
     data: { revoked: true },
   });
