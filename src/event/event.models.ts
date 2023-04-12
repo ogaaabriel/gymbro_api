@@ -1,4 +1,18 @@
 import { z } from "zod";
+import { UpdateEventDate, UpdateEventInfo } from "../types/event";
+
+const isValidLimit = (schema: UpdateEventInfo) => {
+  if (schema.hasLimit) {
+    return schema.limitCount;
+  }
+  return true;
+};
+
+const isValidDate = (schema: UpdateEventDate) => {
+  const dateInput = new Date(schema.eventDate);
+  const dateNow = new Date();
+  return dateInput > dateNow;
+};
 
 export const CreateEventValidate = z
   .object({
@@ -7,7 +21,7 @@ export const CreateEventValidate = z
     eventDate: z
       .string({ required_error: "Data do evento não pode ser nula" })
       .datetime({ message: "Data inválida" }),
-    public: z.boolean().optional(),
+    isPublic: z.boolean().optional(),
     hasLimit: z.boolean().optional(),
     limitCount: z
       .number()
@@ -16,11 +30,27 @@ export const CreateEventValidate = z
       .optional(),
     adminId: z.number({ required_error: "Admin Id não pode ser nulo" }),
   })
-  .refine((schema) => {
-    return schema.hasLimit === true && schema.limitCount;
-  }, "Deve ser informado um limite de participantes")
-  .refine((schema) => {
-    const dateInput = new Date(schema.eventDate);
-    const dateNow = new Date();
-    return dateInput > dateNow;
-  }, "Data do evento não pode ser menor que a data atual");
+  .refine(isValidLimit, "Deve ser informado um limite de participantes")
+  .refine(isValidDate, "Data do evento não pode ser menor que a data atual");
+
+export const UpdateEventInfoValidate = z
+  .object({
+    title: z.string().optional(),
+    description: z.string().optional(),
+    isPublic: z.boolean().optional(),
+    hasLimit: z.boolean().optional(),
+    limitCount: z
+      .number()
+      .positive({ message: "Número máximo de participantes deve ser positivo" })
+      .gt(1, "Número de participantes deve ser maior que 1")
+      .optional(),
+  })
+  .refine(isValidLimit, "Deve ser informado um limite de participantes");
+
+export const UpdateEventDateValidate = z
+  .object({
+    eventDate: z
+      .string({ required_error: "Data do evento não pode ser nula" })
+      .datetime({ message: "Data inválida" }),
+  })
+  .refine(isValidDate, "Data do evento não pode ser menor que a data atual");

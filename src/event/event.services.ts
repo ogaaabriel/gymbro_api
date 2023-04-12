@@ -1,6 +1,6 @@
 import db from "../utils/db";
 
-import { Event } from "../types/event";
+import { Event, UpdateEventDate, UpdateEventInfo } from "../types/event";
 
 export const createEvent = (eventData: Event) => {
   return db.event.create({
@@ -8,16 +8,34 @@ export const createEvent = (eventData: Event) => {
   });
 };
 
+export const updateEventInfo = (id: number, data: UpdateEventInfo) => {
+  return db.event.update({ where: { id }, data: { ...data } });
+};
+
+export const updateEventDate = (id: number, data: UpdateEventDate) => {
+  return db.event.update({ where: { id }, data: { ...data } });
+};
+
+export const deleteEvent = (id: number) => {
+  return db.event.update({ where: { id }, data: { isActive: false } });
+};
+
 export const findPublicEvents = () => {
-  return db.event.findMany({ where: { public: true } });
+  return db.event.findMany({
+    where: { isPublic: true, isActive: true, eventDate: { gte: new Date() } },
+  });
 };
 
 export const findPrivateEvents = () => {
-  return db.event.findMany({ where: { public: false } });
+  return db.event.findMany({
+    where: { isPublic: false, isActive: true, eventDate: { gte: new Date() } },
+  });
 };
 
 export const findEventById = (id: number) => {
-  return db.event.findUnique({ where: { id } });
+  return db.event.findFirst({
+    where: { id, isActive: true, eventDate: { gte: new Date() } },
+  });
 };
 
 export const findEventParticipants = (id: number) => {

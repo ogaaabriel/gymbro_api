@@ -41,9 +41,10 @@ model Event {
   title         String
   description   String
   eventDate     DateTime
-  public        Boolean         @default(true)
+  isPublic      Boolean         @default(true)
   hasLimit      Boolean         @default(false)
   limitCount    Int?
+  isActive      Boolean         @default(true)
   adminId       Int
   Admin         User            @relation(fields: [adminId], references: [id], onDelete: Cascade)
   UsersOnEvents UsersOnEvents[]

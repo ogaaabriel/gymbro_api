@@ -1,8 +1,15 @@
 import { NextFunction, Request, Response } from "express";
 
-import { CreateEventValidate } from "./event.models";
+import {
+  CreateEventValidate,
+  UpdateEventDateValidate,
+  UpdateEventInfoValidate,
+} from "./event.models";
 import {
   createEvent as createEventService,
+  updateEventInfo as updateEventInfoService,
+  updateEventDate as updateEventDateService,
+  deleteEvent as deleteEventService,
   findPublicEvents,
   findPrivateEvents,
   findEventById,
@@ -10,12 +17,15 @@ import {
   findEventParticipants,
   checkIsParticipant,
 } from "./event.services";
+import { User } from "../types/user";
+import { StatusCodes } from "http-status-codes";
 
 export const createEvent = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -31,25 +41,62 @@ export const createEvent = async (
     let newEventData = req.body;
     newEventData.adminId = req.user?.id;
     newEventData = CreateEventValidate.parse(newEventData);
-
-    await createEventService(newEventData);
-    return res.json({ newEvent: newEventData });
+    const newEvent = await createEventService(newEventData);
+    return res.json(newEvent);
   } catch (error) {
     next(error);
   }
 };
 
-export const updateEvent = async (
+export const updateEventInfo = async (
   req: Request,
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
     ] 
   */
+  /*  
+    #swagger.parameters['createEvent'] = {
+      in: 'body',
+      schema: { $ref: '#/definitions/updateEventInfo' }
+    } 
+  */
   try {
+    const newEventInfo = req.body;
+    UpdateEventInfoValidate.parse(newEventInfo);
+    const event = await updateEventInfoService(req.event?.id!, newEventInfo);
+    return res.json(event);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const updateEventDate = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // #swagger.tags = ['Event']
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
+  /*  
+    #swagger.parameters['createEvent'] = {
+      in: 'body',
+      schema: { $ref: '#/definitions/updateEventDate' }
+    } 
+  */
+  try {
+    const newEventDate = req.body;
+    UpdateEventDateValidate.parse(newEventDate);
+    const event = await updateEventDateService(req.event?.id!, newEventDate);
+    return res.json(event);
   } catch (error) {
     next(error);
   }
@@ -60,12 +107,15 @@ export const deleteEvent = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
     ] 
   */
   try {
+    await deleteEventService(req.event?.id!);
+    return res.json({ message: "Evento excluído com sucesso" });
   } catch (error) {
     next(error);
   }
@@ -76,6 +126,7 @@ export const getPublicEvents = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -94,6 +145,7 @@ export const getPrivateEvents = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -112,6 +164,7 @@ export const getEvent = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -124,6 +177,11 @@ export const getEvent = async (
     const isParticipant = (await checkIsParticipant(event?.id!, req.user?.id!))
       ? true
       : false;
+    if (!event?.isPublic && (!isAdmin && !isParticipant)) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Evento não encontrado" });
+    }
     return res.json({ event, isAdmin, isParticipant });
   } catch (error) {
     next(error);
@@ -135,6 +193,7 @@ export const getEventParticipants = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -143,8 +202,17 @@ export const getEventParticipants = async (
   try {
     const { eventId } = req.params;
     const participants = await findEventParticipants(parseInt(eventId));
+    const participantsWithoutPassword: User[] = [];
+    for (let participant of participants) {
+      const { password, ...data } = participant;
+      participantsWithoutPassword.push(data);
+    }
     const admin = await findEventAdmin(parseInt(eventId));
-    return res.json({ participants, admin });
+    const { password, ...adminWithoutPassword } = admin!;
+    return res.json({
+      participants: participantsWithoutPassword,
+      admin: adminWithoutPassword,
+    });
   } catch (error) {
     next(error);
   }
@@ -155,6 +223,7 @@ export const joinEvent = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -171,6 +240,7 @@ export const leaveEvent = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Event']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}

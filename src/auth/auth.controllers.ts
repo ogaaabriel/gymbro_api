@@ -32,6 +32,7 @@ export const login = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Auth']
   /*  
     #swagger.parameters['login'] = {
       in: 'body',
@@ -74,6 +75,7 @@ export const signup = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Auth']
   /*  
     #swagger.parameters['signup'] = {
       in: 'body',
@@ -103,6 +105,7 @@ export const forgotPassword = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Auth']
   /*  
     #swagger.parameters['forgotPassword'] = {
       in: 'body',
@@ -148,6 +151,7 @@ export const resetPassword = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Auth']
   /*  
     #swagger.parameters['resetPassword'] = {
       in: 'body',
@@ -209,6 +213,7 @@ export const refreshToken = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Auth']
   /*  
     #swagger.parameters['refreshToken'] = {
       in: 'body',
@@ -266,6 +271,7 @@ export const revokeRefreshTokens = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['Auth']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}

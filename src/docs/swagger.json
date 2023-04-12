@@ -23,6 +23,9 @@
   "paths": {
     "/api/v1/auth/login": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -42,6 +45,9 @@
     },
     "/api/v1/auth/signup": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -61,6 +67,9 @@
     },
     "/api/v1/auth/forgot_password": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -80,6 +89,9 @@
     },
     "/api/v1/auth/reset_password/{resetPasswordToken}": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -105,6 +117,9 @@
     },
     "/api/v1/auth/refresh_token": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -124,6 +139,9 @@
     },
     "/api/v1/auth/revoke_refresh_tokens": {
       "post": {
+        "tags": [
+          "Auth"
+        ],
         "description": "",
         "parameters": [
           {
@@ -153,6 +171,9 @@
     },
     "/api/v1/user/me": {
       "get": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -169,6 +190,9 @@
     },
     "/api/v1/user/update_profile_picture": {
       "post": {
+        "tags": [
+          "User"
+        ],
         "description": "",
         "consumes": [
           "multipart/form-data"
@@ -195,22 +219,9 @@
     },
     "/api/v1/events/public_events": {
       "get": {
-        "description": "",
-        "parameters": [],
-        "responses": {
-          "200": {
-            "description": "OK"
-          }
-        },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/events/private_events": {
-      "get": {
+        "tags": [
+          "Event"
+        ],
         "description": "",
         "parameters": [],
         "responses": {
@@ -227,6 +238,9 @@
     },
     "/api/v1/events/": {
       "post": {
+        "tags": [
+          "Event"
+        ],
         "description": "",
         "parameters": [
           {
@@ -247,30 +261,13 @@
             "apiKeyAuth": []
           }
         ]
-      },
-      "delete": {
-        "description": "",
-        "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      },
-      "patch": {
-        "description": "",
-        "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
       }
     },
     "/api/v1/events/{eventId}": {
       "get": {
+        "tags": [
+          "Event"
+        ],
         "description": "",
         "parameters": [
           {
@@ -278,6 +275,94 @@
             "in": "path",
             "required": true,
             "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "delete": {
+        "tags": [
+          "Event"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      },
+      "patch": {
+        "tags": [
+          "Event"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "createEvent",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/updateEventInfo"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/{eventId}/update_date": {
+      "put": {
+        "tags": [
+          "Event"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "eventId",
+            "in": "path",
+            "required": true,
+            "type": "string"
+          },
+          {
+            "name": "createEvent",
+            "in": "body",
+            "schema": {
+              "$ref": "#/definitions/updateEventDate"
+            }
           }
         ],
         "responses": {
@@ -294,6 +379,9 @@
     },
     "/api/v1/events/{eventId}/users": {
       "get": {
+        "tags": [
+          "Event"
+        ],
         "description": "",
         "parameters": [
           {
@@ -308,30 +396,6 @@
             "description": "OK"
           }
         },
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/events/join_event": {
-      "post": {
-        "description": "",
-        "parameters": [],
-        "responses": {},
-        "security": [
-          {
-            "apiKeyAuth": []
-          }
-        ]
-      }
-    },
-    "/api/v1/events/leave_event": {
-      "post": {
-        "description": "",
-        "parameters": [],
-        "responses": {},
         "security": [
           {
             "apiKeyAuth": []
@@ -426,7 +490,7 @@
           "type": "string",
           "example": "2023-04-10T15:43:40.783Z"
         },
-        "public": {
+        "isPublic": {
           "type": "boolean",
           "example": true
         },
@@ -437,6 +501,40 @@
         "limitCount": {
           "type": "number",
           "example": 10
+        }
+      }
+    },
+    "updateEventInfo": {
+      "type": "object",
+      "properties": {
+        "title": {
+          "type": "string",
+          "example": "Some title"
+        },
+        "description": {
+          "type": "string",
+          "example": "Some description"
+        },
+        "isPublic": {
+          "type": "boolean",
+          "example": true
+        },
+        "hasLimit": {
+          "type": "boolean",
+          "example": true
+        },
+        "limitCount": {
+          "type": "number",
+          "example": 10
+        }
+      }
+    },
+    "updateEventDate": {
+      "type": "object",
+      "properties": {
+        "eventDate": {
+          "type": "string",
+          "example": "2023-04-10T15:43:40.783Z"
         }
       }
     }

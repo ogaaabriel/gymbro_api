@@ -6,6 +6,7 @@ import fs from "fs";
 import db from "../utils/db";
 
 export const me = async (req: Request, res: Response) => {
+  // #swagger.tags = ['User']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
@@ -19,6 +20,7 @@ export const updateProfilePicture = async (
   res: Response,
   next: NextFunction
 ) => {
+  // #swagger.tags = ['User']
   /* 
     #swagger.security = [
       {"apiKeyAuth": []}
