@@ -20,7 +20,8 @@ Once npm has finished downloading the dependencies:
 
 ```sh
 npx prisma migrate dev
+npm run swagger
 npm run dev
 ```
 
-You can use the `.http` files in requests folder to test the api endpoints. To do it you must install the vscode extension `REST Client Api`.
+And navigate to `http://localhost:8000/api/v1/docs`
