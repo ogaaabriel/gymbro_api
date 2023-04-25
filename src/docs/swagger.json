@@ -410,11 +410,11 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "user@example.com"
+          "example": "user1@email.com"
         },
         "password": {
           "type": "string",
-          "example": "Pass1234"
+          "example": "Gymbro123"
         }
       }
     },
@@ -423,11 +423,11 @@
       "properties": {
         "email": {
           "type": "string",
-          "example": "user@example.com"
+          "example": "user100@email.com"
         },
         "password": {
           "type": "string",
-          "example": "Pass1234"
+          "example": "Gymbro123"
         },
         "firstName": {
           "type": "string",

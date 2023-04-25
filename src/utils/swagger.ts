@@ -26,12 +26,12 @@ const doc = {
   },
   definitions: {
     userCredentials: {
-      email: "user@example.com",
-      password: "Pass1234",
+      email: "user1@email.com",
+      password: "Gymbro123",
     },
     userData: {
-      email: "user@example.com",
-      password: "Pass1234",
+      email: "user100@email.com",
+      password: "Gymbro123",
       firstName: "First name",
       lastName: "Last name",
     },
