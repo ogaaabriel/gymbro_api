@@ -54,6 +54,7 @@ const doc = {
       isPublic: true,
       hasLimit: true,
       limitCount: 10,
+      geocode: [-22.8057839, -45.1908926],
     },
     updateEventInfo: {
       title: "Some title",
@@ -61,6 +62,7 @@ const doc = {
       isPublic: true,
       hasLimit: true,
       limitCount: 10,
+      geocode: [-22.8057839, -45.1908926],
     },
     updateEventDate: {
       eventDate: "2023-04-10T15:43:40.783Z",

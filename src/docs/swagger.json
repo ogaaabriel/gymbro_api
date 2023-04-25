@@ -501,6 +501,16 @@
         "limitCount": {
           "type": "number",
           "example": 10
+        },
+        "geocode": {
+          "type": "array",
+          "example": [
+            -22.8057839,
+            -45.1908926
+          ],
+          "items": {
+            "type": "number"
+          }
         }
       }
     },
@@ -526,6 +536,16 @@
         "limitCount": {
           "type": "number",
           "example": 10
+        },
+        "geocode": {
+          "type": "array",
+          "example": [
+            -22.8057839,
+            -45.1908926
+          ],
+          "items": {
+            "type": "number"
+          }
         }
       }
     },

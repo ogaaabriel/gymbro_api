@@ -1,3 +1,5 @@
+import { Decimal } from "@prisma/client/runtime";
+
 export interface Event {
   id: number;
   title: string;
@@ -6,6 +8,7 @@ export interface Event {
   isPublic: boolean;
   hasLimit: boolean;
   limitCount: number | null;
+  geocode: Decimal[] | number[];
   adminId: number;
 }
 
@@ -15,6 +18,7 @@ export interface UpdateEventInfo {
   public?: boolean;
   hasLimit?: boolean;
   limitCount?: number | null;
+  geocode?: Decimal[] | number[];
 }
 
 export interface UpdateEventDate {
