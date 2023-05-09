@@ -176,7 +176,7 @@ export const resetPassword = async (
       payload.jti || "",
       TokenType.RESET_PASSWORD
     );
-    if (!savedResetPasswordToken || savedResetPasswordToken.revoked == true) {
+    if (!savedResetPasswordToken || savedResetPasswordToken.isRevoked == true) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Token inválido" });
@@ -234,7 +234,7 @@ export const refreshToken = async (
       payload.jti || "",
       TokenType.REFRESH
     );
-    if (!savedRefreshToken || savedRefreshToken.revoked == true) {
+    if (!savedRefreshToken || savedRefreshToken.isRevoked == true) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Token inválido" });

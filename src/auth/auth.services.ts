@@ -26,7 +26,7 @@ export const deleteToken = (id: string) => {
   return db.token.update({
     where: { id },
     data: {
-      revoked: true,
+      isRevoked: true,
     },
   });
 };
@@ -34,6 +34,6 @@ export const deleteToken = (id: string) => {
 export const revokeTokens = (userId: number) => {
   return db.token.updateMany({
     where: { userId },
-    data: { revoked: true },
+    data: { isRevoked: true },
   });
 };

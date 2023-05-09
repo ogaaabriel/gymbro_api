@@ -2,6 +2,39 @@ import bcrypt from "bcrypt";
 
 import db from "../src/utils/db";
 
+const eventsList = [
+  {
+    title: "Jogo de futebol",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
+    geocode: [-22.793602912218237, -45.18656121451332],
+  },
+  {
+    title: "Treino Naja",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
+    geocode: [-22.790396420583914, -45.18435793749387],
+  },
+  {
+    title: "Jogo de futebol",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
+    geocode: [-22.786660267840674, -45.18468778481507],
+  },
+  {
+    title: "Treino de musculação",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
+    geocode: [-22.799385160009166, -45.184126539229084],
+  },
+  {
+    title: "Caminhada",
+    description:
+      "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
+    geocode: [-22.78356276588366, -45.186044128313526],
+  },
+];
+
 const main = async () => {
   await db.user.create({
     data: {
@@ -24,20 +57,17 @@ const main = async () => {
     });
   }
 
-  for (let i = 1; i < 6; i++) {
+  for (let i = 0; i < eventsList.length; i++) {
     await db.event.create({
       data: {
-        title: `Event ${i}`,
-        description:
-          "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Integer suscipit odio dolor, vel luctus velit tincidunt quis. Duis condimentum justo elementum, sagittis erat vitae, tincidunt lorem.",
         eventDate: new Date("2023-05-30T15:34:05.852Z"),
-        geocode: [-22.8057839, -45.1908926],
         adminId: 2,
+        ...eventsList[i],
       },
     });
   }
 
-  for (let i = 1; i < 6; i++) {
+  for (let i = 1; i < eventsList.length + 1; i++) {
     for (let j = 3; j < 6; j++) {
       await db.usersOnEvents.create({
         data: {
