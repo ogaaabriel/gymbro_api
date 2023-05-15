@@ -31,7 +31,7 @@ eventsRouter
   .route("/:eventId/update_date")
   .put(eventExists, isEventOwner, updateEventDate);
 eventsRouter.route("/:eventId/users").get(eventExists, getEventParticipants);
-// eventsRouter.route("/join_event").post(joinEvent);
-// eventsRouter.route("/leave_event").post(leaveEvent);
+eventsRouter.route("/join_event/:eventId").post(joinEvent);
+eventsRouter.route("/leave_event/:eventId").post(leaveEvent);
 
 export default eventsRouter;

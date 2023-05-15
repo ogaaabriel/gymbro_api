@@ -18,9 +18,12 @@ import {
   checkIsParticipant,
   findUserEvents,
   findAdminEvents,
+  leaveEventService,
 } from "./event.services";
 import { User } from "../types/user";
 import { StatusCodes } from "http-status-codes";
+import { joinEventService } from "./event.services";
+import { parse } from "path";
 
 export const createEvent = async (
   req: Request,
@@ -213,6 +216,7 @@ export const getEvent = async (
   try {
     const { eventId } = req.params;
     const event = await findEventById(parseInt(eventId));
+
     const isAdmin = event?.adminId === req.user?.id;
     const isParticipant = (await checkIsParticipant(event?.id!, req.user?.id!))
       ? true
@@ -222,7 +226,26 @@ export const getEvent = async (
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "Evento não encontrado" });
     }
-    return res.json({ event, isAdmin, isParticipant });
+
+    const participantsCount = (await findEventParticipants(event?.id!)).length;
+
+    if (event?.hasLimit && event.limitCount) {
+      let eventParticipantsCount = 0;
+      return res.json({
+        event,
+        isAdmin,
+        isParticipant,
+        participantsCount,
+        availableCount: event?.limitCount! - participantsCount,
+      });
+    }
+
+    return res.json({
+      event,
+      isAdmin,
+      isParticipant,
+      participantsCount,
+    });
   } catch (error) {
     next(error);
   }
@@ -270,6 +293,42 @@ export const joinEvent = async (
     ] 
   */
   try {
+    const { eventId } = req.params;
+    const event = await findEventById(parseInt(eventId));
+
+    // Need to implement friends before user can join private events
+    if (!event?.isPublic) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Evento não encontrado" });
+    }
+
+    const isAdmin = event?.adminId === req.user?.id;
+    const isParticipant = (await checkIsParticipant(event?.id!, req.user?.id!))
+      ? true
+      : false;
+
+    if (isAdmin || isParticipant) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Você já é um participante deste evento" });
+    }
+
+    const eventParticipantsCount = (
+      await findEventParticipants(parseInt(eventId))
+    ).length;
+    if (
+      event.hasLimit &&
+      event.limitCount &&
+      eventParticipantsCount >= event.limitCount
+    ) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Este evento já atingiu o limite de usuários" });
+    }
+
+    await joinEventService(parseInt(eventId), req.user?.id!);
+    return res.json({ message: "Agora você é um participante deste evento" });
   } catch (error) {
     next(error);
   }
@@ -287,6 +346,31 @@ export const leaveEvent = async (
     ] 
   */
   try {
+    const { eventId } = req.params;
+    const event = await findEventById(parseInt(eventId));
+
+    // Need to implement friends before user can join private events
+    if (!event?.isPublic) {
+      return res
+        .status(StatusCodes.NOT_FOUND)
+        .json({ message: "Evento não encontrado" });
+    }
+
+    const isAdmin = event?.adminId === req.user?.id;
+    const isParticipant = (await checkIsParticipant(event?.id!, req.user?.id!))
+      ? true
+      : false;
+
+    if (isAdmin || !isParticipant) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Sem permissão para realizar essa ação" });
+    }
+
+    await leaveEventService(parseInt(eventId), req.user?.id!);
+    return res.json({
+      message: "Você não é mais um participante deste evento",
+    });
   } catch (error) {
     next(error);
   }

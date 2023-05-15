@@ -69,3 +69,15 @@ export const checkIsParticipant = (eventId: number, userId: number) => {
     where: { UsersOnEvents: { some: { eventId, userId } } },
   });
 };
+
+export const joinEventService = (eventId: number, userId: number) => {
+  return db.usersOnEvents.create({
+    data: { eventId, userId },
+  });
+};
+
+export const leaveEventService = (eventId: number, userId: number) => {
+  return db.usersOnEvents.deleteMany({
+    where: { eventId, userId },
+  });
+};
