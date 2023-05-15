@@ -32,6 +32,22 @@ export const findPrivateEvents = () => {
   });
 };
 
+export const findUserEvents = (userId: number) => {
+  return db.event.findMany({
+    where: {
+      isActive: true,
+      eventDate: { gte: new Date() },
+      UsersOnEvents: { some: { userId } },
+    },
+  });
+};
+
+export const findAdminEvents = (userId: number) => {
+  return db.event.findMany({
+    where: { isActive: true, eventDate: { gte: new Date() }, adminId: userId },
+  });
+};
+
 export const findEventById = (id: number) => {
   return db.event.findFirst({
     where: { id, isActive: true, eventDate: { gte: new Date() } },

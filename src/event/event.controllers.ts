@@ -16,6 +16,8 @@ import {
   findEventAdmin,
   findEventParticipants,
   checkIsParticipant,
+  findUserEvents,
+  findAdminEvents,
 } from "./event.services";
 import { User } from "../types/user";
 import { StatusCodes } from "http-status-codes";
@@ -159,6 +161,44 @@ export const getPrivateEvents = async (
   }
 };
 
+export const getUserEvents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // #swagger.tags = ['Event']
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
+  try {
+    const events = await findUserEvents(req.user?.id!);
+    return res.json(events);
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getAdminEvents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // #swagger.tags = ['Event']
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
+  try {
+    const events = await findAdminEvents(req.user?.id!);
+    return res.json(events);
+  } catch (error) {
+    next(error);
+  }
+};
+
 export const getEvent = async (
   req: Request,
   res: Response,
@@ -177,7 +217,7 @@ export const getEvent = async (
     const isParticipant = (await checkIsParticipant(event?.id!, req.user?.id!))
       ? true
       : false;
-    if (!event?.isPublic && (!isAdmin && !isParticipant)) {
+    if (!event?.isPublic && !isAdmin && !isParticipant) {
       return res
         .status(StatusCodes.NOT_FOUND)
         .json({ message: "Evento não encontrado" });

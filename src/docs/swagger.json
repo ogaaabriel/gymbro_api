@@ -236,6 +236,44 @@
         ]
       }
     },
+    "/api/v1/events/user_events": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/admin_events": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "description": "",
+        "parameters": [],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
     "/api/v1/events/": {
       "post": {
         "tags": [
