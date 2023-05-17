@@ -4,7 +4,10 @@ export const LoginValidate = z.object({
   email: z.string().email({ message: "Email inválido" }),
   password: z
     .string()
-    .min(8, { message: "Senha deve conter ao menos 8 caracteres" }),
+    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$/, {
+      message:
+        "A senha deve ter pelo menos 8 caracteres, contendo letras, números e caracteres especiais",
+    }),
 });
 
 export const SignupValidate = LoginValidate.extend({
@@ -26,6 +29,9 @@ export const emailValidate = (email: string) => {
 export const passwordValidate = (password: string) => {
   const schema = z
     .string()
-    .min(8, { message: "Senha deve conter ao menos 8 caracteres" });
+    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$/, {
+      message:
+        "A senha deve ter pelo menos 8 caracteres, contendo letras, números e caracteres especiais",
+    });
   schema.parse(password);
 };

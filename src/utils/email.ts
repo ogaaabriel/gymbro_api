@@ -4,7 +4,7 @@ import { SendEmailCallback } from "../types/email";
 const sendEmail = (
   email: string,
   subject: string,
-  text: string,
+  content: string,
   callback: SendEmailCallback
 ) => {
   const transporter = nodemailer.createTransport({
@@ -25,7 +25,7 @@ const sendEmail = (
       from: process.env.EMAIL_ADDRESS,
       to: email,
       subject,
-      text,
+      html: content,
     },
     callback
   );

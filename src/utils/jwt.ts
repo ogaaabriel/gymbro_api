@@ -17,6 +17,7 @@ export const generateRefreshToken = (user: User, jti: string) => {
 export const generateResetPasswordToken = (user: User, jti: string) => {
   return jwt.sign({ userId: user.id, jti }, process.env.SECRET_KEY!, {
     expiresIn: process.env.RESETPASSWORD_TOKEN_TIME,
+    algorithm: "HS256",
   });
 };
 

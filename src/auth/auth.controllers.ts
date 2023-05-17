@@ -130,7 +130,7 @@ export const forgotPassword = async (
     sendEmail(
       email,
       "Recuperação de senha",
-      process.env.CLIENT_URL + "/reset_password?token=" + token,
+      `<h2>Seu token para recuperação de senha é: <span style="color: #0d6efd;">${token}</span></h2>`,
       (error, info) => {
         if (error) {
           throw error;
