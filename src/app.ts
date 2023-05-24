@@ -24,8 +24,9 @@ app.use("/api/v1/auth", authRouter);
 app.use("/api/v1/user", isAuthenticated, userRouter);
 app.use("/api/v1/events", isAuthenticated, eventsRouter);
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) =>
-  res.status(StatusCodes.BAD_REQUEST).json(error)
-);
+app.use((error: any, req: Request, res: Response, next: NextFunction) => {
+  console.log(error);
+  res.status(StatusCodes.BAD_REQUEST).json(error);
+});
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));

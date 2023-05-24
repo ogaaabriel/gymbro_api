@@ -32,8 +32,14 @@ export const findPrivateEvents = () => {
   });
 };
 
-export const findUserEvents = (userId: number) => {
+export const findUserEvents = (
+  userId: number,
+  page: number,
+  numItems: number
+) => {
   return db.event.findMany({
+    skip: (page - 1) * numItems,
+    take: numItems,
     where: {
       isActive: true,
       eventDate: { gte: new Date() },
@@ -42,8 +48,14 @@ export const findUserEvents = (userId: number) => {
   });
 };
 
-export const findAdminEvents = (userId: number) => {
+export const findAdminEvents = (
+  userId: number,
+  page: number,
+  numItems: number
+) => {
   return db.event.findMany({
+    skip: (page - 1) * numItems,
+    take: numItems,
     where: { isActive: true, eventDate: { gte: new Date() }, adminId: userId },
   });
 };
@@ -61,7 +73,9 @@ export const findEventParticipants = (id: number) => {
 };
 
 export const findEventAdmin = (id: number) => {
-  return db.user.findFirst({ where: { events: { some: { id } } } });
+  return db.user.findFirst({
+    where: { events: { some: { id } } },
+  });
 };
 
 export const checkIsParticipant = (eventId: number, userId: number) => {

@@ -8,6 +8,8 @@ declare global {
     export interface Request {
       user?: User;
       event?: Event;
+      page?: number;
+      numItems?: number;
     }
   }
 }

@@ -67,6 +67,10 @@ const doc = {
     updateEventDate: {
       eventDate: "2023-04-10T15:43:40.783Z",
     },
+    pagination: {
+      page: 1,
+      numItems: 10,
+    },
   },
   components: {},
 };

@@ -14,12 +14,13 @@ import {
   updateEventInfo,
 } from "./event.controllers";
 import { eventExists, isEventOwner } from "./event.middlewares";
+import { paginationMiddleware } from "../middlewares";
 
 const eventsRouter = Router();
 
 eventsRouter.route("/public_events").get(getPublicEvents);
-eventsRouter.route("/user_events").get(getUserEvents);
-eventsRouter.route("/admin_events").get(getAdminEvents);
+eventsRouter.route("/user_events").get(paginationMiddleware, getUserEvents);
+eventsRouter.route("/admin_events").get(paginationMiddleware, getAdminEvents);
 // eventsRouter.route("/private_events").get(getPrivateEvents);
 eventsRouter.route("/").post(createEvent);
 eventsRouter

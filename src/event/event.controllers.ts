@@ -23,7 +23,6 @@ import {
 import { User } from "../types/user";
 import { StatusCodes } from "http-status-codes";
 import { joinEventService } from "./event.services";
-import { parse } from "path";
 
 export const createEvent = async (
   req: Request,
@@ -139,7 +138,7 @@ export const getPublicEvents = async (
   */
   try {
     const events = await findPublicEvents();
-    return res.json(events);
+    return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
   }
@@ -158,7 +157,7 @@ export const getPrivateEvents = async (
   */
   try {
     const events = await findPrivateEvents();
-    return res.json(events);
+    return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
   }
@@ -175,9 +174,25 @@ export const getUserEvents = async (
       {"apiKeyAuth": []}
     ] 
   */
+  /*  
+    #swagger.parameters['page'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
+  /*  
+    #swagger.parameters['numItems'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
-    const events = await findUserEvents(req.user?.id!);
-    return res.json(events);
+    const events = await findUserEvents(
+      req.user?.id!,
+      req.page!,
+      req.numItems!
+    );
+    return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
   }
@@ -194,9 +209,25 @@ export const getAdminEvents = async (
       {"apiKeyAuth": []}
     ] 
   */
+  /*  
+    #swagger.parameters['page'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
+  /*  
+    #swagger.parameters['numItems'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
-    const events = await findAdminEvents(req.user?.id!);
-    return res.json(events);
+    const events = await findAdminEvents(
+      req.user?.id!,
+      req.page!,
+      req.numItems!
+    );
+    return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
   }

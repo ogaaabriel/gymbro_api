@@ -242,7 +242,18 @@
           "Event"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "numItems",
+            "in": "query",
+            "type": "number"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -261,7 +272,18 @@
           "Event"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "numItems",
+            "in": "query",
+            "type": "number"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -645,6 +667,19 @@
         "eventDate": {
           "type": "string",
           "example": "2023-04-10T15:43:40.783Z"
+        }
+      }
+    },
+    "pagination": {
+      "type": "object",
+      "properties": {
+        "page": {
+          "type": "number",
+          "example": 1
+        },
+        "numItems": {
+          "type": "number",
+          "example": 10
         }
       }
     }

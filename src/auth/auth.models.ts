@@ -2,15 +2,17 @@ import { z } from "zod";
 
 export const LoginValidate = z.object({
   email: z.string().email({ message: "Email inválido" }),
+  password: z.string(),
+});
+
+export const SignupValidate = z.object({
+  email: z.string().email({ message: "Email inválido" }),
   password: z
     .string()
     .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$/, {
       message:
         "A senha deve ter pelo menos 8 caracteres, contendo letras, números e caracteres especiais",
     }),
-});
-
-export const SignupValidate = LoginValidate.extend({
   firstName: z
     .string({ required_error: "Nome não pode ser nulo" })
     .min(3, { message: "Nome deve ter ao menos 3 caracteres" }),
