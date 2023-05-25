@@ -10,6 +10,7 @@ declare global {
       event?: Event;
       page?: number;
       numItems?: number;
+      search?: any;
     }
   }
 }

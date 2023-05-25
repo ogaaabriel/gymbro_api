@@ -5,6 +5,7 @@ import {
   getAdminEvents,
   getEvent,
   getEventParticipants,
+  getParticipantEvents,
   getPrivateEvents,
   getPublicEvents,
   getUserEvents,
@@ -14,13 +15,20 @@ import {
   updateEventInfo,
 } from "./event.controllers";
 import { eventExists, isEventOwner } from "./event.middlewares";
-import { paginationMiddleware } from "../middlewares";
+import { paginationMiddleware, searchMiddleware } from "../middlewares";
 
 const eventsRouter = Router();
 
-eventsRouter.route("/public_events").get(getPublicEvents);
-eventsRouter.route("/user_events").get(paginationMiddleware, getUserEvents);
-eventsRouter.route("/admin_events").get(paginationMiddleware, getAdminEvents);
+eventsRouter.route("/public_events").get(searchMiddleware, getPublicEvents);
+eventsRouter
+  .route("/participant_events")
+  .get(paginationMiddleware, searchMiddleware, getParticipantEvents);
+eventsRouter
+  .route("/admin_events")
+  .get(paginationMiddleware, searchMiddleware, getAdminEvents);
+eventsRouter
+  .route("/user_events")
+  .get(paginationMiddleware, searchMiddleware, getUserEvents);
 // eventsRouter.route("/private_events").get(getPrivateEvents);
 eventsRouter.route("/").post(createEvent);
 eventsRouter

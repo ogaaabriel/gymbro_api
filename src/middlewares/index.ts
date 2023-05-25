@@ -31,3 +31,21 @@ export const paginationMiddleware = async (
     next(error);
   }
 };
+
+export const searchMiddleware = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    const { search } = req.query;
+
+    if (search) {
+      req.search = search;
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};

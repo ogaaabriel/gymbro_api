@@ -19,6 +19,7 @@ import {
   findUserEvents,
   findAdminEvents,
   leaveEventService,
+  findParticipantEvents,
 } from "./event.services";
 import { User } from "../types/user";
 import { StatusCodes } from "http-status-codes";
@@ -136,8 +137,15 @@ export const getPublicEvents = async (
       {"apiKeyAuth": []}
     ] 
   */
+  /*  
+    #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    } 
+  */
   try {
-    const events = await findPublicEvents();
+    const events = await findPublicEvents(req.search);
+    console.log(req.search);
     return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
@@ -155,15 +163,21 @@ export const getPrivateEvents = async (
       {"apiKeyAuth": []}
     ] 
   */
+  /*  
+    #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    } 
+  */
   try {
-    const events = await findPrivateEvents();
+    const events = await findPrivateEvents(req.search);
     return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
   }
 };
 
-export const getUserEvents = async (
+export const getParticipantEvents = async (
   req: Request,
   res: Response,
   next: NextFunction
@@ -186,11 +200,18 @@ export const getUserEvents = async (
       type: 'number'
     } 
   */
+  /*  
+    #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    } 
+  */
   try {
-    const events = await findUserEvents(
+    const events = await findParticipantEvents(
       req.user?.id!,
       req.page!,
-      req.numItems!
+      req.numItems!,
+      req.search
     );
     return res.json({ events, count: events.length });
   } catch (error) {
@@ -221,13 +242,72 @@ export const getAdminEvents = async (
       type: 'number'
     } 
   */
+  /*  
+    #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    } 
+  */
   try {
     const events = await findAdminEvents(
       req.user?.id!,
       req.page!,
-      req.numItems!
+      req.numItems!,
+      req.search
     );
     return res.json({ events, count: events.length });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const getUserEvents = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // #swagger.tags = ['Event']
+  /* 
+    #swagger.security = [
+      {"apiKeyAuth": []}
+    ] 
+  */
+  /*  
+    #swagger.parameters['page'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
+  /*  
+    #swagger.parameters['numItems'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
+  /*  
+    #swagger.parameters['search'] = {
+      in: 'query',
+      type: 'string'
+    } 
+  */
+  try {
+    const events = await findUserEvents(
+      req.user?.id!,
+      req.page!,
+      req.numItems!,
+      req.search
+    );
+
+    const eventsWithAdminFlag = events.map((event) =>
+      event.adminId === req.user?.id
+        ? { ...event, isAdmin: true }
+        : { ...event, isAdmin: false }
+    );
+
+    return res.json({
+      events: eventsWithAdminFlag,
+      count: eventsWithAdminFlag.length,
+    });
   } catch (error) {
     next(error);
   }

@@ -20,22 +20,39 @@ export const deleteEvent = (id: number) => {
   return db.event.update({ where: { id }, data: { isActive: false } });
 };
 
-export const findPublicEvents = () => {
+export const findPublicEvents = (search = "") => {
   return db.event.findMany({
-    where: { isPublic: true, isActive: true, eventDate: { gte: new Date() } },
+    where: {
+      isPublic: true,
+      isActive: true,
+      eventDate: { gte: new Date() },
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+      ],
+    },
   });
 };
 
-export const findPrivateEvents = () => {
+export const findPrivateEvents = (search = "") => {
   return db.event.findMany({
-    where: { isPublic: false, isActive: true, eventDate: { gte: new Date() } },
+    where: {
+      isPublic: false,
+      isActive: true,
+      eventDate: { gte: new Date() },
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+      ],
+    },
   });
 };
 
-export const findUserEvents = (
+export const findParticipantEvents = (
   userId: number,
   page: number,
-  numItems: number
+  numItems: number,
+  search = ""
 ) => {
   return db.event.findMany({
     skip: (page - 1) * numItems,
@@ -44,6 +61,10 @@ export const findUserEvents = (
       isActive: true,
       eventDate: { gte: new Date() },
       UsersOnEvents: { some: { userId } },
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+      ],
     },
   });
 };
@@ -51,12 +72,47 @@ export const findUserEvents = (
 export const findAdminEvents = (
   userId: number,
   page: number,
-  numItems: number
+  numItems: number,
+  search = ""
 ) => {
   return db.event.findMany({
     skip: (page - 1) * numItems,
     take: numItems,
-    where: { isActive: true, eventDate: { gte: new Date() }, adminId: userId },
+    where: {
+      isActive: true,
+      eventDate: { gte: new Date() },
+      adminId: userId,
+      OR: [
+        { title: { contains: search, mode: "insensitive" } },
+        { description: { contains: search, mode: "insensitive" } },
+      ],
+    },
+  });
+};
+
+export const findUserEvents = (
+  userId: number,
+  page: number,
+  numItems: number,
+  search = ""
+) => {
+  return db.event.findMany({
+    skip: (page - 1) * numItems,
+    take: numItems,
+    orderBy: [{ eventDate: "asc" }],
+    where: {
+      isActive: true,
+      eventDate: { gte: new Date() },
+      OR: [
+        { OR: [{ adminId: userId }, { UsersOnEvents: { some: { userId } } }] },
+        {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { description: { contains: search, mode: "insensitive" } },
+          ],
+        },
+      ],
+    },
   });
 };
 

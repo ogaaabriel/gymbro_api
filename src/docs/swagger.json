@@ -223,7 +223,13 @@
           "Event"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -236,7 +242,7 @@
         ]
       }
     },
-    "/api/v1/events/user_events": {
+    "/api/v1/events/participant_events": {
       "get": {
         "tags": [
           "Event"
@@ -252,6 +258,11 @@
             "name": "numItems",
             "in": "query",
             "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
@@ -282,6 +293,46 @@
             "name": "numItems",
             "in": "query",
             "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/events/user_events": {
+      "get": {
+        "tags": [
+          "Event"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "page",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "numItems",
+            "in": "query",
+            "type": "number"
+          },
+          {
+            "name": "search",
+            "in": "query",
+            "type": "string"
           }
         ],
         "responses": {
