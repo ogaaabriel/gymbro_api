@@ -25,7 +25,7 @@ model User {
 model Token {
   id          String    @id @unique @default(uuid())
   hashedToken String
-  isRevoked     Boolean   @default(false)
+  isRevoked   Boolean   @default(false)
   tokenType   TokenType
   userId      Int
   User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
@@ -58,4 +58,17 @@ model UsersOnEvents {
   User    User  @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@id([eventId, userId])
+}
+
+model Friendship {
+  id      Int              @id @default(autoincrement())
+  user1Id Int
+  user2Id Int
+  status  FriendshipStatus
+}
+
+enum FriendshipStatus {
+  ACCEPTED
+  PENDING
+  REJECTED
 }
