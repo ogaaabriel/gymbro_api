@@ -103,7 +103,7 @@ export const findUserEvents = (
     where: {
       isActive: true,
       eventDate: { gte: new Date() },
-      OR: [
+      AND: [
         { OR: [{ adminId: userId }, { UsersOnEvents: { some: { userId } } }] },
         {
           OR: [
