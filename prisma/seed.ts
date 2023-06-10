@@ -60,7 +60,7 @@ const main = async () => {
   for (let i = 0; i < eventsList.length; i++) {
     await db.event.create({
       data: {
-        eventDate: new Date("2023-05-30T15:34:05.852Z"),
+        eventDate: new Date("2023-12-30T15:34:05.852Z"),
         adminId: 2,
         ...eventsList[i],
       },

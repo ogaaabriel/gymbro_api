@@ -407,7 +407,7 @@ export const joinEvent = async (
     const { eventId } = req.params;
     const event = await findEventById(parseInt(eventId));
 
-    // Need to implement friends before user can join private events
+    // TODO: Need to implement friends before user can join private events
     if (!event?.isPublic) {
       return res
         .status(StatusCodes.NOT_FOUND)

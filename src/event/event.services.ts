@@ -96,9 +96,28 @@ export const findUserEvents = (
   numItems: number,
   search = ""
 ) => {
+  /*
+  * For now the implementation of pagination will be done in the frontend
   return db.event.findMany({
     skip: (page - 1) * numItems,
     take: numItems,
+    orderBy: [{ eventDate: "asc" }],
+    where: {
+      isActive: true,
+      eventDate: { gte: new Date() },
+      AND: [
+        { OR: [{ adminId: userId }, { UsersOnEvents: { some: { userId } } }] },
+        {
+          OR: [
+            { title: { contains: search, mode: "insensitive" } },
+            { description: { contains: search, mode: "insensitive" } },
+          ],
+        },
+      ],
+    },
+  });
+  */
+  return db.event.findMany({
     orderBy: [{ eventDate: "asc" }],
     where: {
       isActive: true,
