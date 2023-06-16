@@ -19,6 +19,7 @@ model User {
   events             Event[]
   isAdmin            Boolean         @default(false)
   isActive           Boolean         @default(true)
+  isEmailConfirmed   Boolean         @default(false)
   UsersOnEvents      UsersOnEvents[]
 }
 
@@ -34,6 +35,7 @@ model Token {
 enum TokenType {
   REFRESH
   RESET_PASSWORD
+  CONFIRM_EMAIL
 }
 
 model Event {

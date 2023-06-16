@@ -21,11 +21,13 @@ import {
   createUser,
   findUserByEmail,
   findUserById,
+  markEmailConfirmed,
 } from "../user/user.services";
 import { hashToken } from "../utils/hash";
 import sendEmail from "../utils/email";
 import { generateResetPasswordToken, generateTokens } from "../utils/jwt";
 import { TokenType } from "@prisma/client";
+import { requestEmailConfirmation } from "./utils";
 
 export const login = async (
   req: Request,
@@ -47,6 +49,13 @@ export const login = async (
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Credenciais inválidas!" });
+    }
+
+    if (!user.isEmailConfirmed) {
+      await requestEmailConfirmation(user);
+      return res.status(StatusCodes.PRECONDITION_REQUIRED).json({
+        message: "Código de confirmação enviado para o email cadastrado!",
+      });
     }
 
     const validPassword = await checkUserPassword(
@@ -83,18 +92,76 @@ export const signup = async (
     } 
   */
   try {
-    let newUser = SignupValidate.parse(req.body);
+    const newUserData = SignupValidate.parse(req.body);
 
-    const user = await findUserByEmail(newUser.email);
+    const user = await findUserByEmail(newUserData.email);
     if (user) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Esse email já está sendo utilizado" });
     }
 
-    newUser = await createUser(newUser);
+    const newUser = await createUser(newUserData);
+    await requestEmailConfirmation(newUser);
+
     const { password, ...userWithoutPassword } = newUser;
-    return res.json(userWithoutPassword);
+    return res.json({
+      user: userWithoutPassword,
+      message: "Código de confirmação enviado para o email cadastrado!",
+    });
+  } catch (error) {
+    next(error);
+  }
+};
+
+export const confirmEmail = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  // #swagger.tags = ['Auth']
+  try {
+    const { confirmEmailToken } = req.params;
+
+    if (!confirmEmailToken) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Token é necessário" });
+    }
+
+    const payload: any = jwtLib.verify(
+      confirmEmailToken,
+      process.env.SECRET_KEY!
+    );
+
+    const savedConfirmEmailToken = await findTokenById(
+      payload.jti || "",
+      TokenType.CONFIRM_EMAIL
+    );
+    if (!savedConfirmEmailToken || savedConfirmEmailToken.isRevoked == true) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Token inválido" });
+    }
+
+    const hashedToken = hashToken(confirmEmailToken);
+    if (hashedToken !== savedConfirmEmailToken.hashedToken) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Token inválido" });
+    }
+
+    const user = await findUserById(payload.userId);
+    if (!user) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Autorização inválida" });
+    }
+
+    await markEmailConfirmed(user.id);
+    await deleteToken(payload.jti);
+
+    return res.json({ message: "Email confirmado com sucesso!" });
   } catch (error) {
     next(error);
   }

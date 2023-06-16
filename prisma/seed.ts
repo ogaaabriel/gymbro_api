@@ -43,6 +43,7 @@ const main = async () => {
       firstName: "Admin",
       lastName: "00001",
       isAdmin: true,
+      isEmailConfirmed: true,
     },
   });
 
@@ -53,6 +54,7 @@ const main = async () => {
         password: await bcrypt.hash("Gymbro123", 10),
         firstName: "User",
         lastName: `0000${i}`,
+        isEmailConfirmed: true,
       },
     });
   }

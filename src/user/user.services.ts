@@ -31,3 +31,10 @@ export const changePassword = (password: string, userId: number) => {
     data: { password: hashPassword(password) },
   });
 };
+
+export const markEmailConfirmed = (userId: number) => {
+  return db.user.update({
+    where: { id: userId },
+    data: { isEmailConfirmed: true },
+  });
+};

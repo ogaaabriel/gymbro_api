@@ -16,4 +16,5 @@ export interface User {
   profilePictureUrl: string | null;
   profilePicturePath: string | null;
   isAdmin: boolean;
+  isEmailConfirmed: boolean;
 }

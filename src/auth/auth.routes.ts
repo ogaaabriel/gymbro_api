@@ -1,6 +1,7 @@
 import express from "express";
 
 import {
+  confirmEmail,
   forgotPassword,
   login,
   refreshToken,
@@ -14,6 +15,7 @@ const authRouter = express.Router();
 
 authRouter.post("/login", login);
 authRouter.post("/signup", signup);
+authRouter.post("/confirm_email/:confirmEmailToken", confirmEmail);
 authRouter.post("/forgot_password", forgotPassword);
 authRouter.post("/reset_password/:resetPasswordToken", resetPassword);
 authRouter.post("/refresh_token", refreshToken);
