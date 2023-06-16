@@ -8,30 +8,35 @@ const eventsList = [
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
     geocode: [-22.793602912218237, -45.18656121451332],
+    address: "Rua São Paulo, 221",
   },
   {
     title: "Treino Naja",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
     geocode: [-22.790396420583914, -45.18435793749387],
+    address: "Rua São Paulo, 221",
   },
   {
     title: "Jogo de futebol",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
     geocode: [-22.786660267840674, -45.18468778481507],
+    address: "Rua São Paulo, 221",
   },
   {
     title: "Treino de musculação",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
     geocode: [-22.799385160009166, -45.184126539229084],
+    address: "Rua São Paulo, 221",
   },
   {
     title: "Caminhada",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
     geocode: [-22.78356276588366, -45.186044128313526],
+    address: "Rua São Paulo, 221",
   },
 ];
 

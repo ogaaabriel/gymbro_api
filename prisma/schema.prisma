@@ -48,6 +48,7 @@ model Event {
   limitCount    Int?
   isActive      Boolean         @default(true)
   geocode       Float[]
+  address       String
   adminId       Int
   Admin         User            @relation(fields: [adminId], references: [id], onDelete: Cascade)
   UsersOnEvents UsersOnEvents[]

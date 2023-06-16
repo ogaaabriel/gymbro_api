@@ -7,6 +7,7 @@ export interface Event {
   hasLimit: boolean;
   limitCount: number | null;
   geocode: number[];
+  address: string;
   adminId: number;
 }
 
@@ -17,6 +18,7 @@ export interface UpdateEventInfo {
   hasLimit?: boolean;
   limitCount?: number | null;
   geocode?: number[];
+  address?: string;
 }
 
 export interface UpdateEventDate {

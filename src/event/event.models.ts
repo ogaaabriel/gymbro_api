@@ -29,6 +29,7 @@ export const CreateEventValidate = z
       .gt(1, "Número de participantes deve ser maior que 1")
       .optional(),
     geocode: z.array(z.number({ required_error: "Geocode não pode ser nulo" })),
+    address: z.string({ required_error: "Endereço não pode ser nulo" }),
     adminId: z.number({ required_error: "Admin Id não pode ser nulo" }),
   })
   .refine(isValidLimit, "Deve ser informado um limite de participantes")
@@ -45,7 +46,10 @@ export const UpdateEventInfoValidate = z
       .positive({ message: "Número máximo de participantes deve ser positivo" })
       .gt(1, "Número de participantes deve ser maior que 1")
       .optional(),
-    geocode: z.array(z.number({ required_error: "Geocode não pode ser nulo" })),
+    geocode: z
+      .array(z.number({ required_error: "Geocode não pode ser nulo" }))
+      .optional(),
+    address: z.string().optional(),
   })
   .refine(isValidLimit, "Deve ser informado um limite de participantes");
 

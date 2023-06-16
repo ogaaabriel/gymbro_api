@@ -695,6 +695,10 @@
           "items": {
             "type": "number"
           }
+        },
+        "address": {
+          "type": "string",
+          "example": "Some address"
         }
       }
     },
@@ -730,6 +734,10 @@
           "items": {
             "type": "number"
           }
+        },
+        "address": {
+          "type": "string",
+          "example": "Some address"
         }
       }
     },
