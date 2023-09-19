@@ -30,7 +30,9 @@ export const findPublicEvents = (search = "") => {
         { title: { contains: search, mode: "insensitive" } },
         { description: { contains: search, mode: "insensitive" } },
       ],
+
     },
+    include: { eventType: true }
   });
 };
 
@@ -45,6 +47,8 @@ export const findPrivateEvents = (search = "") => {
         { description: { contains: search, mode: "insensitive" } },
       ],
     },
+    include: { eventType: true }
+
   });
 };
 
@@ -66,6 +70,8 @@ export const findParticipantEvents = (
         { description: { contains: search, mode: "insensitive" } },
       ],
     },
+    include: { eventType: true }
+
   });
 };
 
@@ -87,6 +93,7 @@ export const findAdminEvents = (
         { description: { contains: search, mode: "insensitive" } },
       ],
     },
+    include: { eventType: true }
   });
 };
 
@@ -132,12 +139,14 @@ export const findUserEvents = (
         },
       ],
     },
+    include: { eventType: true }
   });
 };
 
 export const findEventById = (id: number) => {
   return db.event.findFirst({
     where: { id, isActive: true, eventDate: { gte: new Date() } },
+    include: { eventType: true }
   });
 };
 

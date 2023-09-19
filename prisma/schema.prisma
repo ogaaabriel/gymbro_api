@@ -42,6 +42,8 @@ model Event {
   id            Int             @id @default(autoincrement())
   title         String
   description   String
+  eventTypeId   Int
+  eventType     EventType       @relation(fields: [eventTypeId], references: [id], onDelete: Restrict)
   eventDate     DateTime
   isPublic      Boolean         @default(true)
   hasLimit      Boolean         @default(false)
@@ -52,6 +54,13 @@ model Event {
   adminId       Int
   Admin         User            @relation(fields: [adminId], references: [id], onDelete: Cascade)
   UsersOnEvents UsersOnEvents[]
+}
+
+model EventType {
+  id               Int     @id @default(autoincrement())
+  title            String
+  eventTypeIconUrl String
+  events           Event[]
 }
 
 model UsersOnEvents {

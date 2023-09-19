@@ -196,7 +196,13 @@
           "User"
         ],
         "description": "",
-        "parameters": [],
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
         "responses": {
           "200": {
             "description": "OK"
@@ -219,6 +225,11 @@
           "multipart/form-data"
         ],
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "profile_picture",
             "in": "formData",
@@ -246,6 +257,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "search",
             "in": "query",
             "type": "string"
@@ -270,6 +286,11 @@
         ],
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "page",
             "in": "query",
@@ -306,6 +327,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "page",
             "in": "query",
             "type": "number"
@@ -340,6 +366,11 @@
         ],
         "description": "",
         "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
           {
             "name": "page",
             "in": "query",
@@ -376,6 +407,11 @@
         "description": "",
         "parameters": [
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "createEvent",
             "in": "body",
             "schema": {
@@ -407,6 +443,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -431,6 +472,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -454,6 +500,11 @@
             "name": "eventId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
             "type": "string"
           },
           {
@@ -490,6 +541,11 @@
             "type": "string"
           },
           {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
             "name": "createEvent",
             "in": "body",
             "schema": {
@@ -521,6 +577,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -547,6 +608,11 @@
             "in": "path",
             "required": true,
             "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
           }
         ],
         "responses": {
@@ -572,6 +638,41 @@
             "name": "eventId",
             "in": "path",
             "required": true,
+            "type": "string"
+          },
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "OK"
+          }
+        },
+        "security": [
+          {
+            "apiKeyAuth": []
+          }
+        ]
+      }
+    },
+    "/api/v1/event_types/event_types": {
+      "get": {
+        "tags": [
+          "EventType"
+        ],
+        "description": "",
+        "parameters": [
+          {
+            "name": "authorization",
+            "in": "header",
+            "type": "string"
+          },
+          {
+            "name": "search",
+            "in": "query",
             "type": "string"
           }
         ],
@@ -670,6 +771,10 @@
           "type": "string",
           "example": "Some description"
         },
+        "eventTypeId": {
+          "type": "number",
+          "example": 1
+        },
         "eventDate": {
           "type": "string",
           "example": "2023-04-10T15:43:40.783Z"
@@ -712,6 +817,10 @@
         "description": {
           "type": "string",
           "example": "Some description"
+        },
+        "eventTypeId": {
+          "type": "number",
+          "example": 1
         },
         "isPublic": {
           "type": "boolean",

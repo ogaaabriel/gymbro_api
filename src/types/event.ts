@@ -2,6 +2,7 @@ export interface Event {
   id: number;
   title: string;
   description: string;
+  eventTypeId: number,
   eventDate: Date;
   isPublic: boolean;
   hasLimit: boolean;
@@ -14,6 +15,7 @@ export interface Event {
 export interface UpdateEventInfo {
   title?: string;
   description?: string;
+  eventTypeId: number,
   public?: boolean;
   hasLimit?: boolean;
   limitCount?: number | null;

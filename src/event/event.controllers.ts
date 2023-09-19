@@ -24,6 +24,7 @@ import {
 import { User } from "../types/user";
 import { StatusCodes } from "http-status-codes";
 import { joinEventService } from "./event.services";
+import { findEventTypeById } from "../eventType/eventType.services";
 
 export const createEvent = async (
   req: Request,
@@ -46,8 +47,13 @@ export const createEvent = async (
     let newEventData = req.body;
     newEventData.adminId = req.user?.id;
     newEventData = CreateEventValidate.parse(newEventData);
+    const isEventTypeValid = await findEventTypeById(newEventData.eventTypeId)
+    if (!isEventTypeValid) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: "Por favor, informe uma categoria para o evento" })
+    }
     const newEvent = await createEventService(newEventData);
-    return res.json(newEvent);
+    const eventType = await findEventTypeById(newEvent.eventTypeId)
+    return res.json({ ...newEvent, eventType });
   } catch (error) {
     next(error);
   }
@@ -71,10 +77,15 @@ export const updateEventInfo = async (
     } 
   */
   try {
-    const newEventInfo = req.body;
-    UpdateEventInfoValidate.parse(newEventInfo);
+    let newEventInfo = req.body;
+    newEventInfo = UpdateEventInfoValidate.parse(newEventInfo);
+    const isEventTypeValid = await findEventTypeById(newEventInfo.eventTypeId)
+    if (!isEventTypeValid) {
+      return res.status(StatusCodes.BAD_REQUEST).json({ message: "Por favor, informe a categoria do evento" })
+    }
     const event = await updateEventInfoService(req.event?.id!, newEventInfo);
-    return res.json(event);
+    const eventType = await findEventTypeById(event.eventTypeId)
+    return res.json({ ...event, eventType });
   } catch (error) {
     next(error);
   }
@@ -101,7 +112,8 @@ export const updateEventDate = async (
     const newEventDate = req.body;
     UpdateEventDateValidate.parse(newEventDate);
     const event = await updateEventDateService(req.event?.id!, newEventDate);
-    return res.json(event);
+    const eventType = await findEventTypeById(event.eventTypeId)
+    return res.json({ ...event, eventType });
   } catch (error) {
     next(error);
   }

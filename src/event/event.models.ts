@@ -18,6 +18,7 @@ export const CreateEventValidate = z
   .object({
     title: z.string({ required_error: "Título não pode ser nulo" }),
     description: z.string({ required_error: "Título não pode ser nulo" }),
+    eventTypeId: z.number({ required_error: "Por favor, informe a categoria do evento" }),
     eventDate: z
       .string({ required_error: "Data do evento não pode ser nula" })
       .datetime({ message: "Data inválida" }),
@@ -39,6 +40,7 @@ export const UpdateEventInfoValidate = z
   .object({
     title: z.string().optional(),
     description: z.string().optional(),
+    eventTypeId: z.number().positive({ message: "Por favor, informe a categoria do evento" }),
     isPublic: z.boolean().optional(),
     hasLimit: z.boolean().optional(),
     limitCount: z

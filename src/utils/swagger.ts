@@ -50,6 +50,7 @@ const doc = {
     eventData: {
       title: "Some title",
       description: "Some description",
+      eventTypeId: 1,
       eventDate: "2023-04-10T15:43:40.783Z",
       isPublic: true,
       hasLimit: true,
@@ -60,6 +61,7 @@ const doc = {
     updateEventInfo: {
       title: "Some title",
       description: "Some description",
+      eventTypeId: 1,
       isPublic: true,
       hasLimit: true,
       limitCount: 10,
