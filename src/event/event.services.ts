@@ -20,28 +20,29 @@ export const deleteEvent = (id: number) => {
   return db.event.update({ where: { id }, data: { isActive: false } });
 };
 
-export const findPublicEvents = (search = "") => {
+export const findPublicEvents = (search?: string, eventTypeId?: number) => {
   return db.event.findMany({
     where: {
       isPublic: true,
       isActive: true,
       eventDate: { gte: new Date() },
+      eventTypeId: { equals: eventTypeId },
       OR: [
-        { title: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
+        { title: { contains: search || "", mode: "insensitive" } },
+        { description: { contains: search || "", mode: "insensitive" } },
       ],
-
     },
     include: { eventType: true }
   });
 };
 
-export const findPrivateEvents = (search = "") => {
+export const findPrivateEvents = (search?: string, eventTypeId?: number) => {
   return db.event.findMany({
     where: {
       isPublic: false,
       isActive: true,
       eventDate: { gte: new Date() },
+      eventTypeId: { equals: eventTypeId },
       OR: [
         { title: { contains: search, mode: "insensitive" } },
         { description: { contains: search, mode: "insensitive" } },
@@ -56,7 +57,7 @@ export const findParticipantEvents = (
   userId: number,
   page: number,
   numItems: number,
-  search = ""
+  search?: string, eventTypeId?: number
 ) => {
   return db.event.findMany({
     skip: (page - 1) * numItems,
@@ -65,13 +66,13 @@ export const findParticipantEvents = (
       isActive: true,
       eventDate: { gte: new Date() },
       UsersOnEvents: { some: { userId } },
+      eventTypeId: { equals: eventTypeId },
       OR: [
-        { title: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
+        { title: { contains: search || "", mode: "insensitive" } },
+        { description: { contains: search || "", mode: "insensitive" } },
       ],
     },
     include: { eventType: true }
-
   });
 };
 
@@ -79,7 +80,7 @@ export const findAdminEvents = (
   userId: number,
   page: number,
   numItems: number,
-  search = ""
+  search?: string, eventTypeId?: number
 ) => {
   return db.event.findMany({
     skip: (page - 1) * numItems,
@@ -88,9 +89,10 @@ export const findAdminEvents = (
       isActive: true,
       eventDate: { gte: new Date() },
       adminId: userId,
+      eventTypeId: { equals: eventTypeId },
       OR: [
-        { title: { contains: search, mode: "insensitive" } },
-        { description: { contains: search, mode: "insensitive" } },
+        { title: { contains: search || "", mode: "insensitive" } },
+        { description: { contains: search || "", mode: "insensitive" } },
       ],
     },
     include: { eventType: true }
@@ -101,7 +103,7 @@ export const findUserEvents = (
   userId: number,
   page: number,
   numItems: number,
-  search = ""
+  search?: string, eventTypeId?: number
 ) => {
   /*
   * For now the implementation of pagination will be done in the frontend
@@ -129,12 +131,13 @@ export const findUserEvents = (
     where: {
       isActive: true,
       eventDate: { gte: new Date() },
+      eventTypeId: { equals: eventTypeId },
       AND: [
         { OR: [{ adminId: userId }, { UsersOnEvents: { some: { userId } } }] },
         {
           OR: [
-            { title: { contains: search, mode: "insensitive" } },
-            { description: { contains: search, mode: "insensitive" } },
+            { title: { contains: search || "", mode: "insensitive" } },
+            { description: { contains: search || "", mode: "insensitive" } },
           ],
         },
       ],

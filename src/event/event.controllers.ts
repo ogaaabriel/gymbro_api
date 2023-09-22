@@ -155,9 +155,15 @@ export const getPublicEvents = async (
       type: 'string'
     } 
   */
+  /*  
+    #swagger.parameters['eventTypeId'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
-    const events = await findPublicEvents(req.search);
-    console.log(req.search);
+    console.log(req.eventTypeId)
+    const events = await findPublicEvents(req.search, req.eventTypeId);
     return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
@@ -181,8 +187,14 @@ export const getPrivateEvents = async (
       type: 'string'
     } 
   */
+  /*  
+    #swagger.parameters['eventTypeId'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
-    const events = await findPrivateEvents(req.search);
+    const events = await findPrivateEvents(req.search, req.eventTypeId);
     return res.json({ events, count: events.length });
   } catch (error) {
     next(error);
@@ -218,12 +230,19 @@ export const getParticipantEvents = async (
       type: 'string'
     } 
   */
+  /*  
+    #swagger.parameters['eventTypeId'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
     const events = await findParticipantEvents(
       req.user?.id!,
       req.page!,
       req.numItems!,
-      req.search
+      req.search,
+      req.eventTypeId
     );
     return res.json({ events, count: events.length });
   } catch (error) {
@@ -260,12 +279,19 @@ export const getAdminEvents = async (
       type: 'string'
     } 
   */
+  /*  
+    #swagger.parameters['eventTypeId'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
     const events = await findAdminEvents(
       req.user?.id!,
       req.page!,
       req.numItems!,
-      req.search
+      req.search,
+      req.eventTypeId
     );
     return res.json({ events, count: events.length });
   } catch (error) {
@@ -302,12 +328,19 @@ export const getUserEvents = async (
       type: 'string'
     } 
   */
+  /*  
+    #swagger.parameters['eventTypeId'] = {
+      in: 'query',
+      type: 'number'
+    } 
+  */
   try {
     const events = await findUserEvents(
       req.user?.id!,
       req.page!,
       req.numItems!,
-      req.search
+      req.search,
+      req.eventTypeId
     );
 
     const eventsWithAdminFlag = events.map((event) =>

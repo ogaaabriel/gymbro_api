@@ -265,6 +265,11 @@
             "name": "search",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "eventTypeId",
+            "in": "query",
+            "type": "number"
           }
         ],
         "responses": {
@@ -305,6 +310,11 @@
             "name": "search",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "eventTypeId",
+            "in": "query",
+            "type": "number"
           }
         ],
         "responses": {
@@ -345,6 +355,11 @@
             "name": "search",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "eventTypeId",
+            "in": "query",
+            "type": "number"
           }
         ],
         "responses": {
@@ -385,6 +400,11 @@
             "name": "search",
             "in": "query",
             "type": "string"
+          },
+          {
+            "name": "eventTypeId",
+            "in": "query",
+            "type": "number"
           }
         ],
         "responses": {

@@ -49,3 +49,21 @@ export const searchMiddleware = async (
     next(error);
   }
 };
+
+export const filterByEventType = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+) => {
+  try {
+    let { eventTypeId } = req.query;
+
+    if (eventTypeId) {
+      req.eventTypeId = parseInt(eventTypeId.toString())
+    }
+
+    next();
+  } catch (error) {
+    next(error);
+  }
+};

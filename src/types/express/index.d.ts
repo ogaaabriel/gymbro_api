@@ -1,7 +1,7 @@
 import { Event } from "../event";
 import { User } from "../user";
 
-export {};
+export { };
 
 declare global {
   namespace Express {
@@ -11,6 +11,7 @@ declare global {
       page?: number;
       numItems?: number;
       search?: any;
+      eventTypeId?: number;
     }
   }
 }

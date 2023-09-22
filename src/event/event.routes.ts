@@ -15,20 +15,20 @@ import {
   updateEventInfo,
 } from "./event.controllers";
 import { eventExists, isEventOwner } from "./event.middlewares";
-import { paginationMiddleware, searchMiddleware } from "../middlewares";
+import { filterByEventType, paginationMiddleware, searchMiddleware } from "../middlewares";
 
 const eventsRouter = Router();
 
-eventsRouter.route("/public_events").get(searchMiddleware, getPublicEvents);
+eventsRouter.route("/public_events").get(searchMiddleware, filterByEventType, getPublicEvents);
 eventsRouter
   .route("/participant_events")
-  .get(paginationMiddleware, searchMiddleware, getParticipantEvents);
+  .get(paginationMiddleware, searchMiddleware, filterByEventType, getParticipantEvents);
 eventsRouter
   .route("/admin_events")
-  .get(paginationMiddleware, searchMiddleware, getAdminEvents);
+  .get(paginationMiddleware, searchMiddleware,filterByEventType, getAdminEvents);
 eventsRouter
   .route("/user_events")
-  .get(paginationMiddleware, searchMiddleware, getUserEvents);
+  .get(paginationMiddleware, searchMiddleware, filterByEventType, getUserEvents);
 // eventsRouter.route("/private_events").get(getPrivateEvents);
 eventsRouter.route("/").post(createEvent);
 eventsRouter
