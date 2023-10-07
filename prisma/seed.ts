@@ -4,13 +4,13 @@ import db from "../src/utils/db";
 
 // Corrida, Artes-Marciais, Futebol, Futsal, Basquete, Vôlei, Ciclismo, Musculação, Ciclismo, Esportes Radicais, Outros
 const eventTypeList = [
-  { title: "Corrida", eventTypeIconUrl: "#" },
-  { title: "Artes-Marciais", eventTypeIconUrl: "#" },
-  { title: "Futebol", eventTypeIconUrl: "#" },
-  { title: "Futsal", eventTypeIconUrl: "#" },
-  { title: "Basquete", eventTypeIconUrl: "#" },
-  { title: "Vôlei", eventTypeIconUrl: "#" },
-  { title: "Ciclismo", eventTypeIconUrl: "#" },
+  { title: "Corrida", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/running.svg" },
+  { title: "Artes-Marciais", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/martial-arts.svg" },
+  { title: "Futebol", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.svg" },
+  { title: "Futsal", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.svg" },
+  { title: "Basquete", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/basketball.svg" },
+  { title: "Vôlei", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/volleyball.svg" },
+  { title: "Ciclismo", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/weight-lifting.svg" },
   { title: "Musculação", eventTypeIconUrl: "#" },
   { title: "Esportes Radicais", eventTypeIconUrl: "#" },
   { title: "Outro", eventTypeIconUrl: "#" },
