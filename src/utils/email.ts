@@ -8,17 +8,16 @@ const sendEmail = (
   callback: SendEmailCallback
 ) => {
   const transporter = nodemailer.createTransport({
-    host: process.env.EMAIL_HOST,
-    port: 587,
-    secure: false,
+    service: "gmail",
     auth: {
-      user: process.env.EMAIL_ADDRESS,
-      pass: process.env.EMAIL_PASSWORD,
-    },
-    tls: {
-      ciphers: "SSLv3",
-    },
-  });
+      type: 'OAuth2',
+      user: process.env.MAIL_USERNAME,
+      clientId: process.env.OAUTH_CLIENTID,
+      clientSecret: process.env.OAUTH_CLIENT_SECRET,
+      refreshToken: process.env.OAUTH_REFRESH_TOKEN,
+      accessToken: process.env.OAUTH_ACCESS_TOKEN
+    }
+  } as nodemailer.TransportOptions);
 
   transporter.sendMail(
     {
