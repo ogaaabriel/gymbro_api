@@ -4,13 +4,13 @@ import db from "../src/utils/db";
 
 // Corrida, Artes-Marciais, Futebol, Futsal, Basquete, Vôlei, Ciclismo, Musculação, Ciclismo, Esportes Radicais, Outros
 const eventTypeList = [
-  { title: "Corrida", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/running.svg" },
-  { title: "Artes-Marciais", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/martial-arts.svg" },
-  { title: "Futebol", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.svg" },
-  { title: "Futsal", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.svg" },
-  { title: "Basquete", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/basketball.svg" },
-  { title: "Vôlei", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/volleyball.svg" },
-  { title: "Ciclismo", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/weight-lifting.svg" },
+  { title: "Corrida", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/running.png" },
+  { title: "Artes-Marciais", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/martial-arts.png" },
+  { title: "Futebol", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.png" },
+  { title: "Futsal", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.png" },
+  { title: "Basquete", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/basketball.png" },
+  { title: "Vôlei", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/volleyball.png" },
+  { title: "Ciclismo", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/weight-lifting.png" },
   { title: "Musculação", eventTypeIconUrl: "#" },
   { title: "Esportes Radicais", eventTypeIconUrl: "#" },
   { title: "Outro", eventTypeIconUrl: "#" },
@@ -37,7 +37,7 @@ const eventsList = [
     title: "Jogo de futebol",
     description:
       "Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vestibulum quis massa lacinia, tempor nulla in, auctor est. Praesent nunc nunc, ultrices ac tempor eu, rutrum vitae magna. Maecenas varius nisi quam, vel facilisis nisi ornare sit amet. Aliquam mi neque, efficitur sed sem eget, tristique malesuada erat.",
-    eventTypeId: 1,
+    eventTypeId: 3,
     geocode: [-22.786660267840674, -45.18468778481507],
     address: "Rua São Paulo, 221",
   },
