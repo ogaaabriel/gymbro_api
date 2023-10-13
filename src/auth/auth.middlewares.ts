@@ -19,7 +19,7 @@ export const isAuthenticated = async (
 
   try {
     const token = authorizationHeader.split(" ")[1];
-    const payload: any = jwtLib.verify(token, process.env.SECRET_KEY!);
+    const payload: any = jwtLib.verify(token, process.env.ACCESS_TOKEN_KEY!);
 
     const user = await findUserById(payload.userId);
     if (!user || !user.isActive) {

@@ -3,7 +3,7 @@ import jwt from "jsonwebtoken";
 import { User } from "../types/user";
 
 export const generateAccessToken = (user: User) => {
-  return jwt.sign({ userId: user.id }, process.env.SECRET_KEY!, {
+  return jwt.sign({ userId: user.id }, process.env.ACCESS_TOKEN_KEY!, {
     expiresIn: process.env.ACCESS_TOKEN_TIME,
   });
 };
