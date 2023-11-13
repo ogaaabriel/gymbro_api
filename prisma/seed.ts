@@ -10,8 +10,8 @@ const eventTypeList = [
   { title: "Futsal", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/soccer.png" },
   { title: "Basquete", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/basketball.png" },
   { title: "Vôlei", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/volleyball.png" },
-  { title: "Ciclismo", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/weight-lifting.png" },
-  { title: "Musculação", eventTypeIconUrl: "#" },
+  { title: "Ciclismo", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/cycling.png" },
+  { title: "Musculação", eventTypeIconUrl: "http://gymbro-apy.onrender.com/icons/weight-lifting.png" },
   { title: "Esportes Radicais", eventTypeIconUrl: "#" },
   { title: "Outro", eventTypeIconUrl: "#" },
 ]
