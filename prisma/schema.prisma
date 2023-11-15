@@ -24,12 +24,12 @@ model User {
 }
 
 model Token {
-  id          String    @id @unique @default(uuid())
-  hashedToken String
-  isRevoked   Boolean   @default(false)
-  tokenType   TokenType
-  userId      Int
-  User        User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  id             Int       @id @default(autoincrement())
+  token          String
+  tokenType      TokenType
+  expirationTime DateTime
+  userId         Int
+  User           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
 }
 
 enum TokenType {

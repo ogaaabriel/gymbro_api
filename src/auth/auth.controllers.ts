@@ -12,7 +12,7 @@ import {
 import {
   addTokenToWhiteList,
   deleteToken,
-  findTokenById,
+  findTokenByContent,
   revokeTokens,
 } from "./auth.services";
 import {
@@ -25,9 +25,10 @@ import {
 } from "../user/user.services";
 import { hashToken } from "../utils/hash";
 import sendEmail from "../utils/email";
-import { generateResetPasswordToken, generateTokens } from "../utils/jwt";
+import { generateAccessToken, generateRefreshToken, generateResetPasswordToken } from "../utils/jwt";
 import { TokenType } from "@prisma/client";
 import { requestEmailConfirmation } from "./utils";
+import moment from "moment";
 
 export const login = async (
   req: Request,
@@ -51,6 +52,17 @@ export const login = async (
         .json({ message: "Credenciais inválidas!" });
     }
 
+    const validPassword = await checkUserPassword(
+      credentials.password,
+      user.password
+    );
+    
+    if (!validPassword) {
+      return res
+        .status(StatusCodes.BAD_REQUEST)
+        .json({ message: "Credenciais inválidas!" });
+    }
+
     if (!user.isEmailConfirmed) {
       await requestEmailConfirmation(user);
       return res.status(StatusCodes.PRECONDITION_REQUIRED).json({
@@ -58,22 +70,13 @@ export const login = async (
       });
     }
 
-    const validPassword = await checkUserPassword(
-      credentials.password,
-      user.password
-    );
-    if (!validPassword) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Credenciais inválidas!" });
-    }
 
-    const jti = v4();
-    const [acessToken, refreshToken] = generateTokens(user, jti);
-    await addTokenToWhiteList(jti, refreshToken, TokenType.REFRESH, user.id);
+    const acessToken = generateAccessToken(user);
+    const refreshToken = generateRefreshToken(user);
+    await addTokenToWhiteList(refreshToken);
 
     const { password, ...userWithoutPassword } = user;
-    return res.json({ acessToken, refreshToken, user: userWithoutPassword });
+    return res.json({ acessToken, "refreshToken": refreshToken.token, user: userWithoutPassword });
   } catch (error) {
     next(error);
   }
@@ -129,29 +132,17 @@ export const confirmEmail = async (
         .json({ message: "Token é necessário" });
     }
 
-    const payload: any = jwtLib.verify(
-      confirmEmailToken,
-      process.env.SECRET_KEY!
+    const savedConfirmEmailToken = await findTokenByContent(
+      confirmEmailToken, TokenType.CONFIRM_EMAIL
     );
 
-    const savedConfirmEmailToken = await findTokenById(
-      payload.jti || "",
-      TokenType.CONFIRM_EMAIL
-    );
-    if (!savedConfirmEmailToken || savedConfirmEmailToken.isRevoked == true) {
+    if (!savedConfirmEmailToken || moment(savedConfirmEmailToken.expirationTime).isBefore(new Date())) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Token inválido" });
     }
 
-    const hashedToken = hashToken(confirmEmailToken);
-    if (hashedToken !== savedConfirmEmailToken.hashedToken) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Token inválido" });
-    }
-
-    const user = await findUserById(payload.userId);
+    const user = await findUserById(savedConfirmEmailToken.userId);
     if (!user) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -159,7 +150,7 @@ export const confirmEmail = async (
     }
 
     await markEmailConfirmed(user.id);
-    await deleteToken(payload.jti);
+    await deleteToken(savedConfirmEmailToken.id);
 
     return res.json({ message: "Email confirmado com sucesso!" });
   } catch (error) {
@@ -190,9 +181,8 @@ export const forgotPassword = async (
         .json({ message: "Esse email não corresponde a nenhuma conta" });
     }
 
-    const jti = v4();
-    const token = generateResetPasswordToken(user, jti);
-    await addTokenToWhiteList(jti, token, TokenType.RESET_PASSWORD, user.id);
+    const token = generateResetPasswordToken(user);
+    await addTokenToWhiteList(token);
 
     sendEmail(
       email,
@@ -234,29 +224,17 @@ export const resetPassword = async (
         .json({ message: "Token é necessário" });
     }
 
-    const payload: any = jwtLib.verify(
+    const savedResetPasswordToken = await findTokenByContent(
       resetPasswordToken,
-      process.env.SECRET_KEY!
-    );
-
-    const savedResetPasswordToken = await findTokenById(
-      payload.jti || "",
       TokenType.RESET_PASSWORD
     );
-    if (!savedResetPasswordToken || savedResetPasswordToken.isRevoked == true) {
+    if (!savedResetPasswordToken || moment(savedResetPasswordToken.expirationTime).isBefore(new Date())) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Token inválido" });
     }
 
-    const hashedToken = hashToken(resetPasswordToken);
-    if (hashedToken !== savedResetPasswordToken.hashedToken) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Token inválido" });
-    }
-
-    const user = await findUserById(payload.userId);
+    const user = await findUserById(savedResetPasswordToken.userId);
     if (!user) {
       return res
         .status(StatusCodes.BAD_REQUEST)
@@ -266,7 +244,7 @@ export const resetPassword = async (
     const { newPassword } = req.body;
     passwordValidate(newPassword);
 
-    await deleteToken(payload.jti);
+    await deleteToken(savedResetPasswordToken.id);
     await changePassword(newPassword, user.id);
 
     return res.json({ message: "Senha atualizada com sucesso" });
@@ -295,39 +273,30 @@ export const refreshToken = async (
         .json({ message: "Refresh token é necessário" });
     }
 
-    const payload: any = jwtLib.verify(refreshToken, process.env.SECRET_KEY!);
-
-    const savedRefreshToken = await findTokenById(
-      payload.jti || "",
+    const savedRefreshToken = await findTokenByContent(
+      refreshToken,
       TokenType.REFRESH
     );
-    if (!savedRefreshToken || savedRefreshToken.isRevoked == true) {
+    if (!savedRefreshToken || moment(savedRefreshToken.expirationTime).isBefore(new Date())) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Token inválido" });
     }
 
-    const hashedToken = hashToken(refreshToken);
-    if (hashedToken !== savedRefreshToken.hashedToken) {
-      return res
-        .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Token inválido" });
-    }
-
-    const user = await findUserById(payload.userId);
+    const user = await findUserById(savedRefreshToken.userId);
     if (!user) {
       return res
         .status(StatusCodes.BAD_REQUEST)
         .json({ message: "Autorização inválida" });
     }
 
-    await deleteToken(payload.jti);
+    await deleteToken(savedRefreshToken.id);
 
-    const jti = v4();
-    const [acessToken, newRefreshToken] = generateTokens(user, jti);
-    await addTokenToWhiteList(jti, newRefreshToken, TokenType.REFRESH, user.id);
+    const acessToken = generateAccessToken(user);
+    const newRefreshToken = generateRefreshToken(user);
+    await addTokenToWhiteList(newRefreshToken);
 
-    return res.json({ acessToken, newRefreshToken });
+    return res.json({ acessToken, "newRefreshToken": newRefreshToken.token });
   } catch (error) {
     next(error);
   }
