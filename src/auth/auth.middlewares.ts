@@ -24,7 +24,7 @@ export const isAuthenticated = async (
     const user = await findUserById(payload.userId);
     if (!user || !user.isActive) {
       return res
-        .status(StatusCodes.BAD_REQUEST)
+        .status(StatusCodes.FORBIDDEN)
         .json({ message: "Autorização inválida" });
     }
 
@@ -32,7 +32,9 @@ export const isAuthenticated = async (
     req.user = userWithoutPassword;
     next();
   } catch (error) {
-    next(error);
+    return res
+        .status(StatusCodes.FORBIDDEN)
+        .json({ message: "Ocorreu um erro ao validar o token de acesso" });
   }
 };
 
