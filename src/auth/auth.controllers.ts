@@ -181,6 +181,7 @@ export const forgotPassword = async (
         .json({ message: "Esse email não corresponde a nenhuma conta ativa" });
     }
 
+    await revokeTokens(user.id);
     const token = generateResetPasswordToken(user);
     await addTokenToWhiteList(token);
 
