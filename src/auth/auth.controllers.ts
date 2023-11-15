@@ -175,10 +175,10 @@ export const forgotPassword = async (
     emailValidate(email);
 
     const user = await findUserByEmail(email);
-    if (!user) {
+    if (!user || !user.isEmailConfirmed) {
       return res
         .status(StatusCodes.BAD_REQUEST)
-        .json({ message: "Esse email não corresponde a nenhuma conta" });
+        .json({ message: "Esse email não corresponde a nenhuma conta ativa" });
     }
 
     const token = generateResetPasswordToken(user);
@@ -187,7 +187,7 @@ export const forgotPassword = async (
     sendEmail(
       email,
       "Recuperação de senha",
-      `<h2>Seu token para recuperação de senha é: <span style="color: #0d6efd;">${token}</span></h2>`,
+      `<h2>Seu token para recuperação de senha é: <span style="color: #0d6efd;">${token.token}</span></h2>`,
       (error, info) => {
         if (error) {
           throw error;
