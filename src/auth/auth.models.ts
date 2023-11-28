@@ -9,7 +9,7 @@ export const SignupValidate = z.object({
   email: z.string().email({ message: "Email inválido" }),
   password: z
     .string()
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$/, {
+    .regex(/^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
       message:
         "A senha deve ter pelo menos 8 caracteres, contendo letras, números e caracteres especiais",
     }),
