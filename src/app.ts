@@ -10,6 +10,7 @@ import authRouter from "./auth/auth.routes";
 import userRouter from "./user/user.routes";
 import eventsRouter from "./event/event.routes";
 import eventTypesRouter from "./eventType/eventType.routes";
+import { ZodError } from "zod";
 
 dotenv.config();
 
@@ -26,9 +27,15 @@ app.use("/api/v1/user", isAuthenticated, userRouter);
 app.use("/api/v1/events", isAuthenticated, eventsRouter);
 app.use("/api/v1/event_types", isAuthenticated, eventTypesRouter);
 
-app.use((error: any, req: Request, res: Response, next: NextFunction) => {
-  console.log(error);
-  res.status(StatusCodes.BAD_REQUEST).json(error);
+app.use((error: Error, req: Request, res: Response, next: NextFunction) => {
+  let message = "";
+  if (error instanceof ZodError) {
+    message = ""
+    error.issues.map(issue => message += issue.message + "\n")
+  } else {
+    message = error.message
+  }
+  res.status(StatusCodes.BAD_REQUEST).json({ message });
 });
 
 app.listen(port, () => console.log(`Server is running on port ${port}`));
