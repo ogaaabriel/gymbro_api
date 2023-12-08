@@ -31,7 +31,7 @@ export const emailValidate = (email: string) => {
 export const passwordValidate = (password: string) => {
   const schema = z
     .string()
-    .regex(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@#$%^&+=!])(?!.*\s).{8,}$/, {
+    .regex(/^(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$/, {
       message:
         "A senha deve ter pelo menos 8 caracteres, contendo letras, números e caracteres especiais",
     });
