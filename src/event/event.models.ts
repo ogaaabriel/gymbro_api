@@ -3,7 +3,7 @@ import { UpdateEventDate, UpdateEventInfo } from "../types/event";
 
 const isValidLimit = (schema: UpdateEventInfo) => {
   if (schema.hasLimit) {
-    return schema.limitCount;
+    return schema.limitCount && schema.limitCount > 1;
   }
   return true;
 };
@@ -26,14 +26,12 @@ export const CreateEventValidate = z
     hasLimit: z.boolean().optional(),
     limitCount: z
       .number()
-      .positive({ message: "Número máximo de participantes deve ser positivo" })
-      .gt(1, "Número de participantes deve ser maior que 1")
       .optional(),
     geocode: z.array(z.number({ required_error: "Geocode não pode ser nulo" })),
     address: z.string({ required_error: "Endereço não pode ser nulo" }),
     adminId: z.number({ required_error: "Admin Id não pode ser nulo" }),
   })
-  .refine(isValidLimit, "Deve ser informado um limite de participantes")
+  .refine(isValidLimit, "Deve ser informado um limite de participantes maior que 1")
   .refine(isValidDate, "Data do evento não pode ser menor que a data atual");
 
 export const UpdateEventInfoValidate = z
@@ -45,15 +43,13 @@ export const UpdateEventInfoValidate = z
     hasLimit: z.boolean().optional(),
     limitCount: z
       .number()
-      .positive({ message: "Número máximo de participantes deve ser positivo" })
-      .gt(1, "Número de participantes deve ser maior que 1")
       .optional(),
     geocode: z
       .array(z.number({ required_error: "Geocode não pode ser nulo" }))
       .optional(),
     address: z.string().optional(),
   })
-  .refine(isValidLimit, "Deve ser informado um limite de participantes");
+  .refine(isValidLimit, "Deve ser informado um limite de participantes maior que 1");
 
 export const UpdateEventDateValidate = z
   .object({
