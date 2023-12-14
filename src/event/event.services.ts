@@ -32,6 +32,7 @@ export const findPublicEvents = (search?: string, eventTypeId?: number) => {
         { description: { contains: search || "", mode: "insensitive" } },
       ],
     },
+    orderBy: [{ createdDate: 'desc' }],
     include: { eventType: true }
   });
 };

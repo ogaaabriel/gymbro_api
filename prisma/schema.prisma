@@ -45,6 +45,7 @@ model Event {
   eventTypeId   Int
   eventType     EventType       @relation(fields: [eventTypeId], references: [id], onDelete: Restrict)
   eventDate     DateTime
+  createdDate   DateTime        @default(now())
   isPublic      Boolean         @default(true)
   hasLimit      Boolean         @default(false)
   limitCount    Int?

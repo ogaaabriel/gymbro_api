@@ -40,7 +40,7 @@ export const updateProfilePicture = async (
       .json({ message: "Nenhuma imagem recebida" });
   }
   try {
-    if (req.user?.profilePicturePath) {
+    if (req.user?.profilePicturePath && req.user?.profilePicturePath.split('/')[2] != 'default.jpg') {
       try {
         fs.unlinkSync(req.user.profilePicturePath);
       } catch (error) {}

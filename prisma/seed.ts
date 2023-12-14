@@ -19,20 +19,14 @@ const eventTypesList = [
 
 const usersList = [
   { email: 'adrian@email.com', firstName: 'Adrian', lastName: 'Ferraz' },
-  { email: 'ana@email.com', firstName: 'Ana', lastName: 'Elisa' },
-  { email: 'angelo@email.com', firstName: 'Angelo', lastName: 'Roberto' },
-  { email: 'antonio@email.com', firstName: 'Antônio', lastName: 'Paulo' },
-  { email: 'cintia@email.com', firstName: 'Cintia', lastName: 'Mara' },
-  { email: 'flavio@email.com', firstName: 'Flávio', lastName: 'Guilherme' },
-  { email: 'francine@email.com', firstName: 'Francine', lastName: 'Santos' },
   { email: 'gabriel@email.com', firstName: 'Gabriel', lastName: 'Rodrigues' },
   { email: 'joao@email.com', firstName: 'João', lastName: 'Paulo' },
-  { email: 'josimar@email.com', firstName: 'Josimar', lastName: 'Pereira' },
   { email: 'marco@email.com', firstName: 'Marco', lastName: 'Vinicius' },
-  { email: 'sandro@email.com', firstName: 'Sandro', lastName: 'Henrique' },
-  { email: 'suzi@email.com', firstName: 'Suzi', lastName: 'Maria' },
-  { email: 'ueverson@email.com', firstName: 'Ueverson', lastName: 'Ramos' },
-
+  { email: 'allbert@email.com', firstName: 'Allbert', lastName: 'Velleniche' },
+  { email: 'bruno@email.com', firstName: 'Bruno', lastName: 'Donizeti' },
+  { email: 'cristovao@email.com', firstName: 'Cristóvão', lastName: 'Cunha' },
+  { email: 'claudemir@email.com', firstName: 'Claudemir', lastName: 'Pinto' },
+  { email: 'jose@email.com', firstName: 'José', lastName: 'Geraldo' },
 ]
 
 const eventsList = (async () => {
@@ -140,6 +134,8 @@ const main = async () => {
         firstName: usersList[i].firstName,
         lastName: usersList[i].lastName,
         isEmailConfirmed: true,
+        profilePicturePath: 'uploads/profile_pictures/default.jpg',
+        profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/default.jpg'
       },
     });
   }

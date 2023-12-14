@@ -162,7 +162,6 @@ export const getPublicEvents = async (
     } 
   */
   try {
-    console.log(req.eventTypeId)
     const events = await findPublicEvents(req.search, req.eventTypeId);
     return res.json({ events, count: events.length });
   } catch (error) {
