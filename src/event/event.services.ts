@@ -128,7 +128,6 @@ export const findUserEvents = (
   });
   */
   return db.event.findMany({
-    orderBy: [{ eventDate: "asc" }],
     where: {
       isActive: true,
       eventDate: { gte: new Date() },
@@ -143,6 +142,7 @@ export const findUserEvents = (
         },
       ],
     },
+    orderBy: [{ createdDate: 'desc' }],
     include: { eventType: true }
   });
 };
