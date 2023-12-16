@@ -18,15 +18,42 @@ const eventTypesList = [
 ]
 
 const usersList = [
-  { email: 'adrian@email.com', firstName: 'Adrian', lastName: 'Ferraz' },
-  { email: 'gabriel@email.com', firstName: 'Gabriel', lastName: 'Rodrigues' },
-  { email: 'joao@email.com', firstName: 'João', lastName: 'Paulo' },
-  { email: 'marco@email.com', firstName: 'Marco', lastName: 'Vinicius' },
-  { email: 'allbert@email.com', firstName: 'Allbert', lastName: 'Velleniche' },
-  { email: 'bruno@email.com', firstName: 'Bruno', lastName: 'Donizeti' },
-  { email: 'cristovao@email.com', firstName: 'Cristóvão', lastName: 'Cunha' },
-  { email: 'claudemir@email.com', firstName: 'Claudemir', lastName: 'Pinto' },
-  { email: 'jose@email.com', firstName: 'José', lastName: 'Geraldo' },
+  {
+    email: 'adrian@email.com', firstName: 'Adrian', lastName: 'Ferraz', profilePicturePath: 'uploads/profile_pictures/adrian.png',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/adrian.png'
+  },
+  {
+    email: 'gabriel@email.com', firstName: 'Gabriel', lastName: 'Rodrigues', profilePicturePath: 'uploads/profile_pictures/gabriel.png',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/gabriel.png'
+  },
+  {
+    email: 'joao@email.com', firstName: 'João', lastName: 'Paulo', profilePicturePath: 'uploads/profile_pictures/joao.png',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/joao.png'
+  },
+  {
+    email: 'marco@email.com', firstName: 'Marco', lastName: 'Vinicius', profilePicturePath: 'uploads/profile_pictures/marco.png',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/marco.png'
+  },
+  {
+    email: 'allbert@email.com', firstName: 'Allbert', lastName: 'Velleniche', profilePicturePath: 'uploads/profile_pictures/fatec.jpg',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/fatec.jpg'
+  },
+  {
+    email: 'bruno@email.com', firstName: 'Bruno', lastName: 'Donizeti', profilePicturePath: 'uploads/profile_pictures/fatec.jpg',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/fatec.jpg'
+  },
+  {
+    email: 'cristovao@email.com', firstName: 'Cristóvão', lastName: 'Cunha', profilePicturePath: 'uploads/profile_pictures/fatec.jpg',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/fatec.jpg'
+  },
+  {
+    email: 'claudemir@email.com', firstName: 'Claudemir', lastName: 'Pinto', profilePicturePath: 'uploads/profile_pictures/fatec.jpg',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/fatec.jpg'
+  },
+  {
+    email: 'jose@email.com', firstName: 'José', lastName: 'Geraldo', profilePicturePath: 'uploads/profile_pictures/fatec.jpg',
+    profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/fatec.jpg'
+  },
 ]
 
 const eventsList = (async () => {
@@ -134,8 +161,8 @@ const main = async () => {
         firstName: usersList[i].firstName,
         lastName: usersList[i].lastName,
         isEmailConfirmed: true,
-        profilePicturePath: 'uploads/profile_pictures/default.jpg',
-        profilePictureUrl: 'http://gymbro-apy.onrender.com/profile_pictures/default.jpg'
+        profilePicturePath: usersList[i].profilePicturePath,
+        profilePictureUrl: usersList[i].profilePictureUrl
       },
     });
   }
